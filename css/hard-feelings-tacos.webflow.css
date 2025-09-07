@@ -2439,6 +2439,8 @@
     height: 600px;
     overflow: visible;
     margin-top: 80px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .aboutus-textcontainer.au-paragraph-one {
@@ -2666,6 +2668,8 @@
     object-fit: contain;
     object-position: center;
     margin-top: 60px;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .aboutus-textcontainer.au-paragraph-one {
