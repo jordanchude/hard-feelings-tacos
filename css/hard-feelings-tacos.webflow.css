@@ -607,7 +607,7 @@
   }
   
   .nav-logo {
-    margin-left: -20px;
+    margin-left: 0px;
   }
 }
 
@@ -630,7 +630,7 @@
   }
   
   .nav-logo {
-    margin-left: -30px;
+    margin-left: 0px;
   }
 }
 
@@ -2432,7 +2432,8 @@
   }
 
   .about-us-inner-container {
-    object-position: 50% 20%;
+    object-fit: contain;
+    object-position: center;
     width: 100%;
     height: 400px;
     overflow: visible;
@@ -2660,7 +2661,8 @@
 
   .about-us-inner-container {
     height: 280px;
-    object-position: 50% 15%;
+    object-fit: contain;
+    object-position: center;
     margin-top: 110px;
   }
 
