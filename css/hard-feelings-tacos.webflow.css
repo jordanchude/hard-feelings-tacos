@@ -2459,7 +2459,7 @@
   }
 
   .au-image {
-    object-fit: contain !important;
+    object-fit: cover !important;
     object-position: center !important;
     width: 100% !important;
     height: 100% !important;
