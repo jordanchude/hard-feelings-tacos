@@ -1862,14 +1862,6 @@
   position: relative;
 }
 
-.mobile-order-online-cta {
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  padding-left: 0;
-  display: none;
-}
-
 .hero-text-individual.hti-one {
   position: relative;
   overflow: hidden;
@@ -2663,11 +2655,6 @@
     width: 320px;
     height: auto;
     padding: 11px;
-  }
-
-  .mobile-order-online-cta {
-    margin-top: 12px;
-    display: flex;
   }
 
   .ue-event-box {
