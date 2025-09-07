@@ -569,7 +569,7 @@
 
 .slider-image-caption {
   position: absolute;
-  bottom: 20px;
+  bottom: 0px;
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(72, 41, 45, 0.9);
@@ -588,7 +588,7 @@
   .slider-image-caption {
     font-size: 12px;
     padding: 6px 12px;
-    bottom: 15px;
+    bottom: 0px;
   }
   
   .slider-image-container {
@@ -607,7 +607,7 @@
   .slider-image-caption {
     font-size: 11px;
     padding: 5px 10px;
-    bottom: 10px;
+    bottom: 0px;
   }
   
   .slider-image-container {
