@@ -1389,6 +1389,9 @@
   width: 40%;
   position: relative;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .aboutus-textcontainer {
@@ -1403,13 +1406,14 @@
 }
 
 .au-image {
-  object-fit: contain;
-  object-position: center;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  display: block;
+  object-fit: contain !important;
+  object-position: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  max-width: 100% !important;
 }
 
 .owners-inner-container {
