@@ -2435,12 +2435,13 @@
   .about-us-inner-container {
     object-fit: contain;
     object-position: center;
-    width: 100%;
+    width: calc(100% - 32px);
     height: 600px;
     overflow: visible;
     margin-top: 80px;
     margin-left: 16px;
     margin-right: 16px;
+    box-sizing: border-box;
   }
 
   .aboutus-textcontainer.au-paragraph-one {
@@ -2670,6 +2671,8 @@
     margin-top: 60px;
     margin-left: 0;
     margin-right: 0;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .aboutus-textcontainer.au-paragraph-one {
