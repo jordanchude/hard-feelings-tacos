@@ -626,7 +626,7 @@
   justify-content: space-around;
   align-items: center;
   width: 20%;
-  height: 80px;
+  height: 240px;
   display: flex;
   position: relative;
 }
@@ -639,7 +639,7 @@
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 100px;
+  height: 280px;
   display: flex;
   position: sticky;
   top: 0;
@@ -3263,7 +3263,7 @@
 /* Hard Feelings Tacos Logo Styles */
 .nav-logo img,
 .logo-footer img {
-    max-height: 80px;
+    max-height: 240px;
     width: auto;
     object-fit: contain;
 }
@@ -3271,17 +3271,40 @@
 @media (max-width: 768px) {
     .nav-logo img,
     .logo-footer img {
-        max-height: 70px;
+        max-height: 200px;
+    }
+    
+    .navbar {
+        height: 220px;
+    }
+    
+    .nav-logo {
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-logo img,
+    .logo-footer img {
+        max-height: 150px;
+    }
+    
+    .navbar {
+        height: 180px;
+    }
+    
+    .nav-logo {
+        height: 150px;
     }
 }
 
 /* Ensure logos maintain aspect ratio and are more prominent */
 .nav-logo img {
     height: auto;
-    max-width: 250px;
+    max-width: 600px;
 }
 
 .logo-footer img {
     height: auto;
-    max-width: 200px;
+    max-width: 500px;
 }
