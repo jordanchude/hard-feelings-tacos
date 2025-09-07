@@ -701,7 +701,7 @@
   padding-bottom: 20px;
   display: flex;
   position: relative;
-  margin-left: -30px;
+  margin-left: -50px;
 }
 
 .navbar {
@@ -2416,7 +2416,7 @@
   .about-us-inner-container {
     object-position: 50% 20%;
     width: 100%;
-    height: 480px;
+    height: 400px;
     overflow: visible;
     margin-top: 140px;
   }
@@ -2641,7 +2641,7 @@
   }
 
   .about-us-inner-container {
-    height: 320px;
+    height: 280px;
     object-position: 50% 15%;
     margin-top: 110px;
   }
