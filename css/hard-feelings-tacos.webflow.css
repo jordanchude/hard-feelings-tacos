@@ -1386,7 +1386,7 @@
 .about-us-inner-container {
   object-fit: contain;
   object-position: center;
-  width: 40%;
+  width: 90%;
   position: relative;
   overflow: hidden;
 }
@@ -2438,7 +2438,7 @@
     width: 100%;
     height: 400px;
     overflow: visible;
-    margin-top: 140px;
+    margin-top: 80px;
   }
 
   .aboutus-textcontainer.au-paragraph-one {
@@ -2665,7 +2665,7 @@
     height: 280px;
     object-fit: contain;
     object-position: center;
-    margin-top: 110px;
+    margin-top: 60px;
   }
 
   .aboutus-textcontainer.au-paragraph-one {
