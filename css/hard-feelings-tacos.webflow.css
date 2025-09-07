@@ -2441,8 +2441,6 @@
   }
 
   .about-us-inner-container {
-    object-fit: contain;
-    object-position: center;
     width: 100vw;
     height: 600px;
     overflow: visible;
@@ -2459,7 +2457,7 @@
   }
 
   .au-image {
-    object-fit: cover !important;
+    object-fit: contain !important;
     object-position: center !important;
     width: 100% !important;
     height: 100% !important;
@@ -2678,8 +2676,6 @@
 
   .about-us-inner-container {
     height: 420px;
-    object-fit: contain;
-    object-position: center;
     margin-top: 60px;
     margin-left: 0;
     margin-right: 0;
