@@ -2436,7 +2436,7 @@
     object-fit: contain;
     object-position: center;
     width: 100%;
-    height: 500px;
+    height: 600px;
     overflow: visible;
     margin-top: 80px;
   }
@@ -2662,7 +2662,7 @@
   }
 
   .about-us-inner-container {
-    height: 350px;
+    height: 420px;
     object-fit: contain;
     object-position: center;
     margin-top: 60px;
