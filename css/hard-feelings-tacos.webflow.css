@@ -553,6 +553,20 @@
   inset: 62px auto auto 62px;
 }
 
+.slider-image-container {
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+  height: 75%;
+  margin-top: 180px;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .slider-image-caption {
   position: absolute;
   bottom: 20px;
