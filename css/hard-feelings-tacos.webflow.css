@@ -2443,12 +2443,12 @@
   .about-us-inner-container {
     object-fit: contain;
     object-position: center;
-    width: calc(100% - 32px);
+    width: 100vw;
     height: 600px;
     overflow: visible;
     margin-top: 80px;
-    margin-left: 16px;
-    margin-right: 16px;
+    margin-left: 0;
+    margin-right: 0;
     box-sizing: border-box;
   }
 
@@ -2683,7 +2683,7 @@
     margin-top: 60px;
     margin-left: 0;
     margin-right: 0;
-    width: 100%;
+    width: 100vw;
     box-sizing: border-box;
   }
 
