@@ -2459,10 +2459,14 @@
   }
 
   .au-image {
-    object-fit: contain;
-    object-position: center;
-    width: 100%;
-    height: 100%;
+    object-fit: contain !important;
+    object-position: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    max-width: 100% !important;
   }
 
   .paragraph-two2.am-description {
