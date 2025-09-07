@@ -568,7 +568,7 @@
 }
 
 .slider-image-container img {
-  transform: scale(0.85);
+  transform: scale(0.95);
 }
 
 .slider-image-caption {
@@ -603,7 +603,7 @@
   }
   
   .slider-image-container img {
-    transform: scale(0.75);
+    transform: scale(0.85);
   }
   
   .nav-logo {
@@ -626,7 +626,7 @@
   }
   
   .slider-image-container img {
-    transform: scale(0.65);
+    transform: scale(0.75);
   }
   
   .nav-logo {
