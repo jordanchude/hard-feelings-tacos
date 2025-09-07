@@ -1384,7 +1384,8 @@
 }
 
 .about-us-inner-container {
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   width: 40%;
   position: relative;
   overflow: hidden;
