@@ -558,7 +558,7 @@
   justify-content: center;
   align-items: center;
   height: 75%;
-  margin-top: 180px;
+  margin-top: 220px;
   display: flex;
   position: absolute;
   top: 0;
@@ -568,7 +568,7 @@
 }
 
 .slider-image-container img {
-  transform: scale(0.8);
+  transform: scale(0.85);
 }
 
 .slider-image-caption {
@@ -596,14 +596,14 @@
   }
   
   .slider-image-container {
-    margin-top: 200px;
+    margin-top: 240px;
     height: 60%;
     justify-content: center;
     align-items: center;
   }
   
   .slider-image-container img {
-    transform: scale(0.7);
+    transform: scale(0.75);
   }
   
   .nav-logo {
@@ -619,14 +619,14 @@
   }
   
   .slider-image-container {
-    margin-top: 180px;
+    margin-top: 220px;
     height: 50%;
     justify-content: center;
     align-items: center;
   }
   
   .slider-image-container img {
-    transform: scale(0.6);
+    transform: scale(0.65);
   }
   
   .nav-logo {
