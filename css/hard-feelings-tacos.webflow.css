@@ -2359,9 +2359,9 @@
   }
 
   .about-us-inner-container {
-    object-position: 50% 30%;
+    object-position: 50% 20%;
     width: 100%;
-    height: 430px;
+    height: 480px;
     overflow: visible;
   }
 
@@ -2585,8 +2585,8 @@
   }
 
   .about-us-inner-container {
-    height: 270px;
-    object-position: 50% 25%;
+    height: 320px;
+    object-position: 50% 15%;
   }
 
   .aboutus-textcontainer.au-paragraph-one {
