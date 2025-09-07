@@ -553,18 +553,21 @@
   inset: 62px auto auto 62px;
 }
 
-.slider-image-container {
-  z-index: 1;
-  justify-content: center;
-  align-items: center;
-  height: 75%;
-  margin-top: 180px;
-  display: flex;
+.slider-image-caption {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(72, 41, 45, 0.9);
+  color: #f3e7bf;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: Inter, sans-serif;
+  z-index: 5;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .body-two {
