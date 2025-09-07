@@ -596,14 +596,14 @@
   }
   
   .slider-image-container {
-    margin-top: 220px;
+    margin-top: 180px;
     height: 60%;
     justify-content: center;
     align-items: center;
   }
   
   .slider-image-container img {
-    transform: scale(0.9);
+    transform: scale(0.95);
   }
   
   .nav-logo {
@@ -619,14 +619,14 @@
   }
   
   .slider-image-container {
-    margin-top: 200px;
+    margin-top: 160px;
     height: 50%;
     justify-content: center;
     align-items: center;
   }
   
   .slider-image-container img {
-    transform: scale(0.8);
+    transform: scale(0.85);
   }
   
   .nav-logo {
@@ -2893,7 +2893,7 @@
   }
 
   .heading-five.hero-slider-paragraph {
-    width: 62%;
+    width: 85%;
   }
 
   .paragraph-one {
