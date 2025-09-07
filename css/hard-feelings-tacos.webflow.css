@@ -573,7 +573,7 @@
 
 .slider-image-caption {
   position: absolute;
-  bottom: -40px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(72, 41, 45, 0.9);
