@@ -592,11 +592,12 @@
   .slider-image-caption {
     font-size: 12px;
     padding: 6px 12px;
-    bottom: -25px;
+    bottom: -35px;
   }
   
   .slider-image-container {
     margin-top: 180px;
+    margin-left: -20px;
     height: 60%;
     justify-content: center;
     align-items: center;
@@ -615,11 +616,12 @@
   .slider-image-caption {
     font-size: 11px;
     padding: 5px 10px;
-    bottom: -20px;
+    bottom: -30px;
   }
   
   .slider-image-container {
     margin-top: 160px;
+    margin-left: -20px;
     height: 50%;
     justify-content: center;
     align-items: center;
