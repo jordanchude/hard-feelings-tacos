@@ -603,7 +603,7 @@
   }
   
   .slider-image-container img {
-    transform: scale(0.85);
+    transform: scale(0.9);
   }
   
   .nav-logo {
@@ -626,7 +626,7 @@
   }
   
   .slider-image-container img {
-    transform: scale(0.75);
+    transform: scale(0.8);
   }
   
   .nav-logo {
@@ -2534,8 +2534,8 @@
 @media screen and (max-width: 767px) {
   .hero-text-container {
     width: 100%;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .paragraph-1.popup-info {
@@ -2611,7 +2611,7 @@
   }
 
   .slider-paragraph-name-container {
-    width: 240px;
+    width: 320px;
   }
 
   .nav-logo {
@@ -2948,6 +2948,7 @@
     flex-direction: column;
     top: 32px;
     left: 20px;
+    width: 280px;
   }
 
   .hero-text-inner {
