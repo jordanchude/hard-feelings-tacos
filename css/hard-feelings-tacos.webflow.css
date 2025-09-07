@@ -3260,7 +3260,14 @@
 
 
 
-/* Hard Feelings Tacos Logo Styles */
+/* Hero Subtitle Styling */
+.hero-subtitle {
+    font-size: 0.8em;
+    font-style: italic;
+    color: #666;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
 .nav-logo img,
 .logo-footer img {
     max-height: 240px;
