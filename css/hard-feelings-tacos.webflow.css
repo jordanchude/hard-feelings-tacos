@@ -584,6 +584,30 @@
   white-space: nowrap;
 }
 
+@media screen and (max-width: 767px) {
+  .slider-image-caption {
+    font-size: 12px;
+    padding: 6px 12px;
+    bottom: 15px;
+  }
+  
+  .slider-image-container {
+    margin-top: 120px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .slider-image-caption {
+    font-size: 11px;
+    padding: 5px 10px;
+    bottom: 10px;
+  }
+  
+  .slider-image-container {
+    margin-top: 100px;
+  }
+}
+
 .body-two {
   background-color: var(--n-extrawheat);
 }
