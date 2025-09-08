@@ -2623,6 +2623,9 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
+    margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .nav-logo {
@@ -2969,11 +2972,12 @@
   .slider-paragraph-name-container {
     flex-direction: column;
     top: 32px;
-    left: 20px;
+    left: 50%;
     width: 280px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
+    transform: translateX(-50%);
   }
 
   .hero-text-inner {
@@ -3675,16 +3679,18 @@
 .hero-slider-paragraph,
 .slider-paragraph-name-container p,
 .slider-paragraph-name-container .heading-five {
-  word-break: keep-all;
+  word-break: keep-all !important;
   overflow-wrap: break-word;
+  white-space: nowrap;
 }
 
 @media screen and (max-width: 767px) {
   .hero-slider-paragraph,
   .slider-paragraph-name-container p,
   .slider-paragraph-name-container .heading-five {
-    word-break: normal;
+    word-break: keep-all !important;
     overflow-wrap: break-word;
-    hyphens: auto;
+    white-space: normal;
+    hyphens: none;
   }
 }
