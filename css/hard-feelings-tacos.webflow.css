@@ -595,7 +595,7 @@
   .slider-image-caption {
     font-size: 12px;
     padding: 6px 12px;
-    bottom: -35px;
+    bottom: 10px;
   }
   
   .slider-image-container {
@@ -619,7 +619,7 @@
   .slider-image-caption {
     font-size: 11px;
     padding: 5px 10px;
-    bottom: -30px;
+    bottom: 5px;
   }
   
   .slider-image-container {
@@ -3779,6 +3779,11 @@ html, body {
   
   .slider-image-container img {
     transform: scale(0.75) !important;
+  }
+  
+  .slider-image-caption {
+    bottom: 15px !important;
+    z-index: 10 !important;
   }
 }
 
