@@ -3490,6 +3490,9 @@
   word-break: normal;
   hyphens: auto;
   line-height: 1.5;
+  text-align: left;
+  white-space: normal;
+  overflow: visible;
 }
 
 .upcoming-popups-container .event-item h3 {
@@ -3631,18 +3634,20 @@
 }
 
 .instagram-link {
-    display: inline-block;
-    background-color: var(--primary-salmon);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    text-decoration: none;
-    margin-top: 15px;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-    text-align: center;
-    white-space: nowrap;
-    min-width: 200px;
+  display: inline-block;
+  background-color: var(--primary-salmon);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  text-decoration: none;
+  margin-top: 15px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  white-space: nowrap;
+  min-width: 220px;
+  font-size: 16px;
+  line-height: 1.2;
 }
 
 .instagram-link:hover {
@@ -3692,9 +3697,11 @@
     }
     
     .instagram-link {
-        min-width: 180px;
-        font-size: 14px;
-        padding: 8px 16px;
+        min-width: 200px;
+        font-size: 15px;
+        padding: 10px 20px;
+        text-align: center;
+        white-space: nowrap;
     }
 }
 
@@ -3869,9 +3876,9 @@ html, body {
   }
 }
 
-/* iPhone 12/13/14/15 Pro (390px width) */
-@media screen and (max-width: 390px) {
-  /* Ensure mobile navigation works on iPhone 15 Pro */
+/* iPhone 12/13/14/15/16 Pro (393px width) */
+@media screen and (max-width: 393px) {
+  /* Ensure mobile navigation works on iPhone 16 Pro */
   .w-nav-menu[data-nav-menu-open] {
     background-color: var(--a-tumeric) !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
@@ -3890,6 +3897,14 @@ html, body {
   
   .hero-slider-container {
     height: 400px;
+  }
+  
+  .instagram-link {
+    min-width: 190px;
+    font-size: 14px;
+    padding: 9px 18px;
+    text-align: center;
+    white-space: nowrap;
   }
   
   .slider-paragraph-name-container {
