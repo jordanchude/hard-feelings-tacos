@@ -2913,6 +2913,8 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
+    font-size: 14px;
+    line-height: 18px;
   }
 
   .paragraph-one {
@@ -3692,5 +3694,7 @@
     overflow-wrap: break-word;
     white-space: normal;
     hyphens: none;
+    font-size: 12px !important;
+    line-height: 16px !important;
   }
 }
