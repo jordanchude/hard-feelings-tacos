@@ -2755,7 +2755,7 @@
   /* Mobile navigation styles are handled in the main 991px media query above */
 
   .hero-text-container {
-    align-items: center;
+    align-items: flex-start;
     padding-left: 0;
     padding-right: 0;
   }
@@ -3758,10 +3758,12 @@ html, body {
 /* iPhone 12 Pro Max, iPhone 13/14/15 series (428px width) */
 @media screen and (max-width: 428px) {
   .slider-paragraph-name-container {
-    top: 5px !important;
-    left: 5px !important;
+    top: 10px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
     width: 300px;
-    margin-right: 50px;
+    margin-right: 0;
+    text-align: center;
   }
   
   .slider-image-container {
@@ -3810,9 +3812,11 @@ html, body {
   
   .slider-paragraph-name-container {
     width: 280px;
-    margin-right: 60px;
+    margin-right: 0;
     top: 10px !important;
-    left: 10px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    text-align: center;
   }
   
   .slider-image-container {
@@ -3840,9 +3844,11 @@ html, body {
 @media screen and (max-width: 375px) {
   .slider-paragraph-name-container {
     top: 5px !important;
-    left: 5px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
     width: 260px;
-    margin-right: 40px;
+    margin-right: 0;
+    text-align: center;
   }
   
   .slider-image-container {
@@ -3860,9 +3866,11 @@ html, body {
 @media screen and (max-width: 360px) {
   .slider-paragraph-name-container {
     top: 5px !important;
-    left: 5px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
     width: 250px;
-    margin-right: 30px;
+    margin-right: 0;
+    text-align: center;
   }
   
   .slider-image-container {
