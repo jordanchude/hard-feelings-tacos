@@ -2543,6 +2543,16 @@
     padding-left: 10px;
     padding-right: 10px;
   }
+  
+  /* Make hero text break naturally at word boundaries */
+  .hero-text-container .paragraph-one,
+  .hero-text-container .heading-one {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: auto;
+    max-width: 100%;
+  }
 
   .paragraph-1.popup-info {
     font-size: 14px;
@@ -2814,6 +2824,16 @@
     align-items: center;
     padding-left: 0;
     padding-right: 0;
+  }
+  
+  /* Make hero text break naturally at word boundaries */
+  .hero-text-container .paragraph-one,
+  .hero-text-container .heading-one {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: auto;
+    max-width: 100%;
   }
 
   .restaurant-herocontainer {
@@ -3757,5 +3777,15 @@ html, body {
   .slider-paragraph-name-container {
     width: 280px;
     margin-right: 60px;
+  }
+  
+  /* Make hero text break naturally at word boundaries */
+  .hero-text-container .paragraph-one,
+  .hero-text-container .heading-one {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: auto;
+    max-width: 100%;
   }
 }
