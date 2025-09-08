@@ -2509,7 +2509,7 @@
 
   .hero-slider-container {
     width: 100%;
-    height: 670px;
+    height: 800px;
   }
 
   .heading-one {
@@ -2776,7 +2776,7 @@
 
   .hero-slider-container {
     border-radius: 32px;
-    height: 480px;
+    height: 600px;
   }
 
   .colorblock-primary {
@@ -3794,7 +3794,7 @@ html, body {
   }
   
   .hero-slider-container {
-    height: 400px;
+    height: 550px;
     overflow: visible;
   }
   
