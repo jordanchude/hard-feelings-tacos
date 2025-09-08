@@ -551,6 +551,9 @@
   display: flex;
   position: relative;
   inset: 62px auto auto 62px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .slider-image-container {
@@ -2617,6 +2620,9 @@
 
   .slider-paragraph-name-container {
     width: 320px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   .nav-logo {
@@ -2901,6 +2907,9 @@
 
   .heading-five.hero-slider-paragraph {
     width: 85%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   .paragraph-one {
@@ -2962,6 +2971,9 @@
     top: 32px;
     left: 20px;
     width: 280px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   .hero-text-inner {
@@ -3652,6 +3664,25 @@
 
 @media screen and (max-width: 767px) {
   .hero-paragraph {
+    word-break: normal;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+}
+
+
+/* Prevent awkward word breaks in slideshow ingredient names */
+.hero-slider-paragraph,
+.slider-paragraph-name-container p,
+.slider-paragraph-name-container .heading-five {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+@media screen and (max-width: 767px) {
+  .hero-slider-paragraph,
+  .slider-paragraph-name-container p,
+  .slider-paragraph-name-container .heading-five {
     word-break: normal;
     overflow-wrap: break-word;
     hyphens: auto;
