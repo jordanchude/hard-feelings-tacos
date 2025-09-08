@@ -38,9 +38,6 @@
   text-align: center;
 }
 
-.paragraph-1.popup-info {
-  color: var(--n-extrawheat);
-}
 
 .restaurant-herocontainer {
   flex-direction: column;
@@ -1932,14 +1929,6 @@
   height: 100%;
 }
 
-.top-banner-inner {
-  width: 100%;
-  height: 100%;
-  padding: 16px 32px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: inset 0 -4px 20px -6px #0006;
-}
 
 .popup-image-box-2 {
   background-color: #fdf8e9;
@@ -1956,13 +1945,6 @@
   overflow: hidden;
 }
 
-.top-info-banner-container {
-  background-color: var(--n-soil);
-  width: 100%;
-  height: auto;
-  display: block;
-  position: relative;
-}
 
 .restaurant-hero-container-inner {
   flex-direction: row;
@@ -2586,10 +2568,6 @@
     max-width: 100%;
   }
 
-  .paragraph-1.popup-info {
-    font-size: 14px;
-    line-height: 19px;
-  }
 
   .restaurant-herocontainer {
     margin-top: 24px;
@@ -2800,9 +2778,6 @@
     margin-right: 2px;
   }
 
-  .top-banner-inner {
-    padding: 9px 16px;
-  }
 
   .popup-image-box-2 {
     width: 320px;
