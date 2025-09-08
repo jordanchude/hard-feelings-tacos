@@ -2541,9 +2541,6 @@
     width: 100%;
     padding-left: 10px;
     padding-right: 10px;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
   }
 
   .paragraph-1.popup-info {
@@ -2623,9 +2620,6 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
-    margin: 0 auto;
-    left: 50%;
-    transform: translateX(-50%);
   }
 
   .nav-logo {
@@ -2817,8 +2811,6 @@
     align-items: center;
     padding-left: 0;
     padding-right: 0;
-    max-width: 90%;
-    margin: 0 auto;
   }
 
   .restaurant-herocontainer {
@@ -2919,9 +2911,7 @@
 
   .paragraph-one {
     white-space: normal;
-    word-break: normal;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    word-break: break-all;
   }
 
   .paragraph-one.hero-paragraph {
@@ -2974,12 +2964,11 @@
   .slider-paragraph-name-container {
     flex-direction: column;
     top: 32px;
-    left: 50%;
+    left: 20px;
     width: 280px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
-    transform: translateX(-50%);
   }
 
   .hero-text-inner {
@@ -3683,7 +3672,6 @@
 .slider-paragraph-name-container .heading-five {
   word-break: keep-all !important;
   overflow-wrap: break-word;
-  white-space: nowrap;
 }
 
 @media screen and (max-width: 767px) {
