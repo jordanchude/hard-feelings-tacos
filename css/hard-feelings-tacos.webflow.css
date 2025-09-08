@@ -2492,6 +2492,13 @@
     width: 100% !important;
   }
 
+  /* Fix ingredient slider positioning */
+  .hero-rotating-text-container {
+    margin-left: 0;
+    left: 0;
+    width: 100%;
+  }
+
 
   .restaurant-herocontainer {
     margin-top: 24px;
@@ -3560,6 +3567,13 @@
     align-items: stretch !important;
   }
 
+  /* Fix ingredient slider positioning for all mobile devices */
+  .hero-rotating-text-container {
+    margin-left: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+  }
+
   .w-nav-menu[data-nav-menu-open] .w-nav-link {
     display: block !important;
     padding: 15px 0 !important;
@@ -3759,9 +3773,10 @@ html, body {
   }
   
   .slider-image-container {
-    margin-top: 220px !important;
-    margin-left: -35px !important;
+    margin-top: 200px !important;
+    margin-left: 0 !important;
     height: 55% !important;
+    width: 100% !important;
   }
   
   .slider-image-container img {
@@ -3811,9 +3826,10 @@ html, body {
   }
   
   .slider-image-container {
-    margin-top: 220px !important;
-    margin-left: -35px !important;
+    margin-top: 200px !important;
+    margin-left: 0 !important;
     height: 50% !important;
+    width: 100% !important;
   }
   
   .slider-image-container img {
@@ -3832,9 +3848,10 @@ html, body {
   }
   
   .slider-image-container {
-    margin-top: 240px !important;
-    margin-left: -35px !important;
+    margin-top: 220px !important;
+    margin-left: 0 !important;
     height: 45% !important;
+    width: 100% !important;
   }
   
   .slider-image-container img {
