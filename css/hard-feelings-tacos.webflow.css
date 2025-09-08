@@ -3795,6 +3795,7 @@ html, body {
   
   .hero-slider-container {
     height: 400px;
+    overflow: visible;
   }
   
   .instagram-link {
@@ -3820,20 +3821,20 @@ html, body {
   .slider-paragraph-name-container {
     width: 280px;
     margin-right: 0;
-    top: 10px !important;
+    top: 5px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
   }
   
   .slider-image-container {
-    margin-top: 200px !important;
+    margin-top: 150px !important;
     margin-left: 0 !important;
     height: 50% !important;
     width: 100% !important;
   }
   
   .slider-image-container img {
-    transform: scale(0.65) !important;
+    transform: scale(0.6) !important;
   }
 }
 
