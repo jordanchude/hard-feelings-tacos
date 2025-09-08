@@ -596,7 +596,7 @@
   }
   
   .slider-image-container {
-    margin-top: 160px;
+    margin-top: 200px;
     margin-left: -35px;
     height: 60%;
     justify-content: center;
@@ -620,7 +620,7 @@
   }
   
   .slider-image-container {
-    margin-top: 140px;
+    margin-top: 220px;
     margin-left: -35px;
     height: 50%;
     justify-content: center;
@@ -2482,16 +2482,6 @@
     padding-left: 10px;
     padding-right: 10px;
   }
-  
-  /* Make hero text break naturally at word boundaries */
-  .hero-text-container .paragraph-one,
-  .hero-text-container .heading-one {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    word-break: normal;
-    hyphens: auto;
-    max-width: 100%;
-  }
 
 
   .restaurant-herocontainer {
@@ -2759,16 +2749,6 @@
     padding-left: 0;
     padding-right: 0;
   }
-  
-  /* Make hero text break naturally at word boundaries */
-  .hero-text-container .paragraph-one,
-  .hero-text-container .heading-one {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    word-break: normal;
-    hyphens: auto;
-    max-width: 100%;
-  }
 
   .restaurant-herocontainer {
     margin-top: 24px;
@@ -2817,7 +2797,6 @@
   }
 
   .heading-one.heading-red {
-    text-align: center;
   }
 
   .heading-one.heading-red.hero-heading {
@@ -2873,7 +2852,6 @@
   }
 
   .paragraph-one.hero-paragraph {
-    text-align: center;
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
@@ -3763,11 +3741,10 @@ html, body {
     transform: translateX(-50%) !important;
     width: 300px;
     margin-right: 0;
-    text-align: center;
   }
   
   .slider-image-container {
-    margin-top: 180px !important;
+    margin-top: 220px !important;
     margin-left: -35px !important;
     height: 55% !important;
   }
@@ -3816,27 +3793,16 @@ html, body {
     top: 10px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    text-align: center;
   }
   
   .slider-image-container {
-    margin-top: 180px !important;
+    margin-top: 220px !important;
     margin-left: -35px !important;
     height: 50% !important;
   }
   
   .slider-image-container img {
     transform: scale(0.65) !important;
-  }
-  
-  /* Make hero text break naturally at word boundaries */
-  .hero-text-container .paragraph-one,
-  .hero-text-container .heading-one {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    word-break: normal;
-    hyphens: auto;
-    max-width: 100%;
   }
 }
 
@@ -3848,11 +3814,10 @@ html, body {
     transform: translateX(-50%) !important;
     width: 260px;
     margin-right: 0;
-    text-align: center;
   }
   
   .slider-image-container {
-    margin-top: 200px !important;
+    margin-top: 240px !important;
     margin-left: -35px !important;
     height: 45% !important;
   }
@@ -3870,11 +3835,10 @@ html, body {
     transform: translateX(-50%) !important;
     width: 250px;
     margin-right: 0;
-    text-align: center;
   }
   
   .slider-image-container {
-    margin-top: 220px !important;
+    margin-top: 260px !important;
     margin-left: -35px !important;
     height: 40% !important;
   }
