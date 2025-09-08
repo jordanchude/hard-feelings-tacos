@@ -2616,10 +2616,11 @@
   }
 
   .slider-paragraph-name-container {
-    width: 380px;
+    width: 350px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
+    margin-right: 60px;
   }
 
   .nav-logo {
@@ -2969,6 +2970,7 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
+    margin-right: 50px;
   }
 
   .hero-text-inner {
