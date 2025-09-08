@@ -3777,6 +3777,13 @@ html, body {
   .slider-paragraph-name-container {
     width: 280px;
     margin-right: 60px;
+    top: 10px !important;
+    left: 10px !important;
+  }
+  
+  .slider-image-container {
+    margin-top: 200px !important;
+    height: 40% !important;
   }
   
   /* Make hero text break naturally at word boundaries */
