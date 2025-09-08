@@ -2270,26 +2270,15 @@
     position: relative;
   }
 
-  /* Mobile navigation - hidden by default */
-  .nav-menu {
-    display: none;
-  }
-
-  /* Mobile navigation when open */
+  /* Mobile navigation when open - enhance Webflow's default */
   .w-nav-menu[data-nav-menu-open] {
-    display: block !important;
     background-color: var(--a-tumeric) !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
     z-index: 9999999 !important;
-    position: absolute !important;
-    top: 100% !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
+    padding: 20px 32px !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
     align-items: stretch !important;
-    padding: 20px 32px !important;
   }
 
   /* Mobile navigation links */
