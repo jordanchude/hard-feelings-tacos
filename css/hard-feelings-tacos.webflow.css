@@ -2616,7 +2616,7 @@
   }
 
   .slider-paragraph-name-container {
-    width: 350px;
+    width: 380px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
@@ -2965,7 +2965,7 @@
     flex-direction: column;
     top: 32px;
     left: 20px;
-    width: 300px;
+    width: 320px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
