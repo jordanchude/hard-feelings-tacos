@@ -2538,6 +2538,9 @@
     width: 100%;
     padding-left: 10px;
     padding-right: 10px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   .paragraph-1.popup-info {
@@ -2805,6 +2808,8 @@
     align-items: center;
     padding-left: 0;
     padding-right: 0;
+    max-width: 90%;
+    margin: 0 auto;
   }
 
   .restaurant-herocontainer {
@@ -2900,11 +2905,17 @@
 
   .paragraph-one {
     white-space: normal;
-    word-break: break-all;
+    word-break: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .paragraph-one.hero-paragraph {
     text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    word-break: normal;
   }
 
   .paragraph-one.paragraph-white.ov-paragraph-two {
@@ -3631,3 +3642,18 @@
     font-family: Inter, sans-serif !important;
 }
 
+
+
+/* Prevent awkward word breaks in hero text */
+.hero-paragraph {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+@media screen and (max-width: 767px) {
+  .hero-paragraph {
+    word-break: normal;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+}
