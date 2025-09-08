@@ -3920,7 +3920,7 @@ html, body {
   }
   
   .slider-image-container img {
-    transform: scale(0.75);
+    transform: scale(0.9);
   }
   
   .hero-slider-container {
@@ -4002,7 +4002,7 @@ html, body {
   }
   
   .slider-image-container img {
-    transform: scale(0.75);
+    transform: scale(1.0);
   }
   
   .restaurant-herocontainer {
