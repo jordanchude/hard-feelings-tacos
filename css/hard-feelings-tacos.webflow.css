@@ -2558,6 +2558,18 @@
 }
 
 @media screen and (max-width: 767px) {
+  /* Ensure mobile navigation works on all devices */
+  .w-nav-menu[data-nav-menu-open] {
+    background-color: var(--a-tumeric) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+    z-index: 9999999 !important;
+    position: fixed !important;
+    top: 80px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+  }
+
   .hero-text-container {
     width: 100%;
     padding-left: 10px;
@@ -2840,6 +2852,18 @@
 }
 
 @media screen and (max-width: 479px) {
+  /* Ensure mobile navigation works on smaller devices like iPhone 15 Pro */
+  .w-nav-menu[data-nav-menu-open] {
+    background-color: var(--a-tumeric) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+    z-index: 9999999 !important;
+    position: fixed !important;
+    top: 80px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+  }
+
   .hero-text-container {
     align-items: center;
     padding-left: 0;
@@ -3847,6 +3871,18 @@ html, body {
 
 /* iPhone 12/13/14/15 Pro (390px width) */
 @media screen and (max-width: 390px) {
+  /* Ensure mobile navigation works on iPhone 15 Pro */
+  .w-nav-menu[data-nav-menu-open] {
+    background-color: var(--a-tumeric) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+    z-index: 9999999 !important;
+    position: fixed !important;
+    top: 80px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+  }
+
   .restaurant-herocontainer {
     gap: 80px !important;
     margin-top: 40px;
