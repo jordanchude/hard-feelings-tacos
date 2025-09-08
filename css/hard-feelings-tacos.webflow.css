@@ -550,7 +550,7 @@
   z-index: 10;
   display: flex;
   position: relative;
-  inset: 62px auto auto 62px;
+  inset: 20px auto auto 62px;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
@@ -2987,7 +2987,7 @@
 
   .slider-paragraph-name-container {
     flex-direction: column;
-    top: 32px;
+    top: 20px;
     left: 20px;
     width: 320px;
     word-wrap: break-word;
