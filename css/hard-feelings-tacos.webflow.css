@@ -2223,7 +2223,7 @@
   .restaurant-herocontainer {
     flex-direction: column-reverse;
     overflow: hidden;
-    gap: 40px;
+    gap: 60px;
   }
 
   .heading-five.nav-heading {
@@ -2553,7 +2553,7 @@
     margin-top: 24px;
     padding-left: 16px;
     padding-right: 16px;
-    gap: 30px;
+    gap: 50px;
   }
 
   .hero-slider-container {
@@ -2818,7 +2818,7 @@
 
   .restaurant-herocontainer {
     margin-top: 24px;
-    gap: 25px;
+    gap: 40px;
   }
 
   .hero-slider-container {
