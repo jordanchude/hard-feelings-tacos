@@ -3742,3 +3742,20 @@ html, body {
     max-width: calc(100vw - 40px);
   }
 }
+
+/* iPhone 12 and similar devices (390px width) */
+@media screen and (max-width: 390px) {
+  .restaurant-herocontainer {
+    gap: 80px !important;
+    margin-top: 40px;
+  }
+  
+  .hero-slider-container {
+    height: 400px;
+  }
+  
+  .slider-paragraph-name-container {
+    width: 280px;
+    margin-right: 60px;
+  }
+}
