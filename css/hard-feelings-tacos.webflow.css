@@ -3778,7 +3778,7 @@ html, body {
   }
   
   .slider-image-container img {
-    transform: scale(0.7) !important;
+    transform: scale(0.75) !important;
   }
 }
 
@@ -3797,7 +3797,7 @@ html, body {
   }
   
   .slider-image-container img {
-    transform: scale(0.65) !important;
+    transform: scale(0.7) !important;
   }
 }
 
@@ -3825,7 +3825,7 @@ html, body {
   }
   
   .slider-image-container img {
-    transform: scale(0.6) !important;
+    transform: scale(0.65) !important;
   }
   
   /* Make hero text break naturally at word boundaries */
@@ -3854,7 +3854,7 @@ html, body {
   }
   
   .slider-image-container img {
-    transform: scale(0.55) !important;
+    transform: scale(0.6) !important;
   }
 }
 
@@ -3873,6 +3873,6 @@ html, body {
   }
   
   .slider-image-container img {
-    transform: scale(0.5) !important;
+    transform: scale(0.55) !important;
   }
 }
