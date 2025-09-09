@@ -180,8 +180,11 @@
       <div class="ue-inner-heading">
         <h3 class="heading-one heading-red ue-heading">Pop-Ups</h3>
         <div class="events-toggle">
-          <button class="toggle-btn active" data-tab="upcoming">Upcoming</button>
-          <button class="toggle-btn" data-tab="past">Past</button>
+          <div class="toggle-container">
+            <div class="toggle-slider"></div>
+            <button class="toggle-btn active" data-tab="upcoming">Upcoming</button>
+            <button class="toggle-btn" data-tab="past">Past</button>
+          </div>
         </div>
       </div>
       <div class="ue-inner-content">
@@ -328,6 +331,7 @@
     // Events toggle functionality
     document.addEventListener('DOMContentLoaded', function() {
       const toggleButtons = document.querySelectorAll('.toggle-btn');
+      const toggleContainer = document.querySelector('.toggle-container');
       const upcomingEvents = document.getElementById('upcoming-events');
       const pastEvents = document.getElementById('past-events');
       
@@ -339,11 +343,13 @@
           // Add active class to clicked button
           this.classList.add('active');
           
-          // Show/hide appropriate events
+          // Update slider position
           if (this.dataset.tab === 'upcoming') {
+            toggleContainer.classList.remove('past');
             upcomingEvents.style.display = 'flex';
             pastEvents.style.display = 'none';
           } else {
+            toggleContainer.classList.add('past');
             upcomingEvents.style.display = 'none';
             pastEvents.style.display = 'flex';
           }

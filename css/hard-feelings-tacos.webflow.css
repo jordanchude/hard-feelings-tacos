@@ -2518,15 +2518,23 @@
 @media screen and (max-width: 767px) {
   /* Mobile navigation styles are handled in the main 991px media query above */
   
-  .events-toggle {
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+  .toggle-container {
+    width: 240px;
+    height: 45px;
+  }
+  
+  .toggle-slider {
+    width: 116px;
+    height: 37px;
+  }
+  
+  .toggle-container.past .toggle-slider {
+    transform: translateX(116px);
   }
   
   .toggle-btn {
-    width: 200px;
-    text-align: center;
+    height: 37px;
+    font-size: 14px;
   }
   
   .hero-text-container {
@@ -3466,45 +3474,68 @@
   overflow: visible;
 }
 
-/* Events Toggle Buttons */
+/* Events Toggle Slider */
 .events-toggle {
   display: flex;
   justify-content: center;
   margin-top: 20px;
   margin-bottom: 20px;
-  gap: 10px;
+  position: relative;
+}
+
+.toggle-container {
+  background-color: var(--n-soil);
+  border-radius: 30px;
+  padding: 4px;
+  display: flex;
+  position: relative;
+  width: 280px;
+  height: 50px;
+}
+
+.toggle-slider {
+  background-color: var(--primary-salmon);
+  border-radius: 26px;
+  width: 136px;
+  height: 42px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+
+.toggle-container.past .toggle-slider {
+  transform: translateX(136px);
 }
 
 .toggle-btn {
-  background-color: var(--n-soil);
+  background: transparent;
   color: var(--n-extrawheat);
-  border: 2px solid var(--n-soil);
-  border-radius: 25px;
-  padding: 12px 24px;
+  border: none;
+  border-radius: 26px;
+  padding: 0;
   font-family: Inter, sans-serif;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
   text-decoration: none;
-}
-
-.toggle-btn:hover {
-  background-color: var(--n-extrawheat);
-  color: var(--n-soil);
-  transform: translateY(-2px);
+  flex: 1;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
 }
 
 .toggle-btn.active {
-  background-color: var(--primary-salmon);
   color: white;
-  border-color: var(--primary-salmon);
 }
 
-.toggle-btn.active:hover {
-  background-color: var(--n-soil);
+.toggle-btn:not(.active) {
   color: var(--n-extrawheat);
-  border-color: var(--n-soil);
 }
 
 .upcoming-popups-container .events-list {
