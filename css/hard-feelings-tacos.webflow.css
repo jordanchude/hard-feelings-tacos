@@ -2836,6 +2836,25 @@
 @media screen and (max-width: 479px) {
   /* Mobile navigation styles are handled in the main 991px media query above */
 
+  .toggle-container {
+    width: 220px;
+    height: 42px;
+  }
+  
+  .toggle-slider {
+    width: 106px;
+    height: 34px;
+  }
+  
+  .toggle-container.past .toggle-slider {
+    transform: translateX(106px);
+  }
+  
+  .toggle-btn {
+    height: 34px;
+    font-size: 13px;
+  }
+
   .hero-text-container {
     align-items: flex-start;
     padding-left: 20px !important;
@@ -4137,6 +4156,25 @@ html, body {
     white-space: nowrap !important;
   }
 
+  .toggle-container {
+    width: 200px;
+    height: 40px;
+  }
+  
+  .toggle-slider {
+    width: 96px;
+    height: 32px;
+  }
+  
+  .toggle-container.past .toggle-slider {
+    transform: translateX(96px);
+  }
+  
+  .toggle-btn {
+    height: 32px;
+    font-size: 12px;
+  }
+
   .menu-img-container {
     height: 280px;
     margin-top: -50px !important;
@@ -4181,6 +4219,25 @@ html, body {
     max-width: none !important;
     display: inline-flex !important;
     white-space: nowrap !important;
+  }
+
+  .toggle-container {
+    width: 180px;
+    height: 38px;
+  }
+  
+  .toggle-slider {
+    width: 86px;
+    height: 30px;
+  }
+  
+  .toggle-container.past .toggle-slider {
+    transform: translateX(86px);
+  }
+  
+  .toggle-btn {
+    height: 30px;
+    font-size: 11px;
   }
 
   .menu-img-container {
