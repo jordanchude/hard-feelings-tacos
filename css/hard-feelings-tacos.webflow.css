@@ -3836,6 +3836,36 @@
 }
 
 
+/* Better text wrapping for Rebecca's About Us paragraphs on mobile */
+@media screen and (max-width: 767px) {
+  .paragraph-one.paragraph-brown.au-paragraph-one,
+  .paragraph-one.paragraph-brown.au-paragraph-two {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: auto;
+    line-height: 1.6;
+    text-align: left;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .paragraph-one.paragraph-brown.au-paragraph-one,
+  .paragraph-one.paragraph-brown.au-paragraph-two {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: auto;
+    line-height: 1.7;
+    text-align: left;
+    font-size: 16px;
+  }
+  
+  .paragraph-one.paragraph-brown.au-paragraph-two {
+    margin-left: 16px;
+  }
+}
+
 /* Prevent horizontal scrolling on mobile */
 html, body {
   overflow-x: hidden;
