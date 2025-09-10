@@ -3963,6 +3963,16 @@
   max-width: 100% !important;
 }
 
+/* Prevent menu item names and ingredient names from breaking mid-word */
+.slider-paragraph-name-container .heading-two.heading-brown,
+.hero-rotating-text-container .heading-two.heading-brown.loop-text {
+  white-space: normal !important;
+  word-wrap: normal !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+}
+
 /* Prevent ingredient names from breaking on mobile */
 @media screen and (max-width: 767px) {
   .slider-paragraph-name-container .heading-five:not(.hero-slider-paragraph) {
@@ -3979,6 +3989,24 @@
     hyphens: none !important;
     line-height: 1.6 !important;
     max-width: 100% !important;
+  }
+  
+  /* Prevent menu item names from breaking mid-word */
+  .slider-paragraph-name-container .heading-two.heading-brown {
+    white-space: normal !important;
+    word-wrap: normal !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: none !important;
+  }
+  
+  /* Prevent ingredient names in rotating text from breaking */
+  .hero-rotating-text-container .heading-two.heading-brown.loop-text {
+    white-space: normal !important;
+    word-wrap: normal !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: none !important;
   }
 }
 
