@@ -3613,12 +3613,23 @@
 .upcoming-popups-container .event-item h3 {
   margin-bottom: 15px;
   color: var(--n-brown);
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+  word-wrap: normal;
+  overflow-wrap: normal;
   word-break: normal;
-  hyphens: auto;
+  hyphens: none;
   text-align: center;
   line-height: 1.3;
+  white-space: normal;
+}
+
+/* Allow mid-word breaking for usernames/handles that are too long */
+.upcoming-popups-container .event-item h3.username-handle {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  white-space: normal !important;
+  max-width: 100%;
+  overflow: visible;
 }
 
 .social-link-text {
@@ -3970,7 +3981,8 @@
 
 /* Prevent menu item names and ingredient names from breaking mid-word */
 .slider-paragraph-name-container .heading-two.heading-brown,
-.hero-rotating-text-container .heading-two.heading-brown.loop-text {
+.hero-rotating-text-container .heading-two.heading-brown.loop-text,
+.upcoming-popups-container .event-item .heading-two.heading-brown {
   white-space: normal !important;
   word-wrap: normal !important;
   overflow-wrap: normal !important;
@@ -4007,6 +4019,15 @@
   
   /* Prevent ingredient names in rotating text from breaking */
   .hero-rotating-text-container .heading-two.heading-brown.loop-text {
+    white-space: normal !important;
+    word-wrap: normal !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: none !important;
+  }
+  
+  /* Prevent location names in Pop Ups section from breaking mid-word */
+  .upcoming-popups-container .event-item .heading-two.heading-brown {
     white-space: normal !important;
     word-wrap: normal !important;
     overflow-wrap: normal !important;
@@ -4061,6 +4082,16 @@
     word-break: normal !important;
     hyphens: none !important;
   }
+  
+  /* Allow mid-word breaking for usernames/handles on mobile */
+  .upcoming-popups-container .event-item h3.username-handle {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-all !important;
+    white-space: normal !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
 }
 
 @media screen and (max-width: 479px) {
@@ -4078,6 +4109,16 @@
   
   .paragraph-one.paragraph-brown.au-paragraph-two {
     margin-left: 0;
+  }
+  
+  /* Allow mid-word breaking for usernames/handles on mobile */
+  .upcoming-popups-container .event-item h3.username-handle {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-all !important;
+    white-space: normal !important;
+    max-width: 100% !important;
+    overflow: visible !important;
   }
 }
 
@@ -4243,11 +4284,22 @@ html, body {
   .upcoming-popups-container .event-item h3 {
     font-size: 18px;
     line-height: 1.1;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    word-wrap: normal;
+    overflow-wrap: normal;
     word-break: normal;
-    hyphens: auto;
+    hyphens: none;
     text-align: center;
+    white-space: normal;
+  }
+  
+  /* Allow mid-word breaking for usernames/handles on mobile */
+  .upcoming-popups-container .event-item h3.username-handle {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-all !important;
+    white-space: normal !important;
+    max-width: 100% !important;
+    overflow: visible !important;
   }
   
   .slider-image-caption {
