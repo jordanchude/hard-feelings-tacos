@@ -2631,12 +2631,12 @@
   }
 
   .slider-paragraph-name-container {
-    width: 350px;
+    width: 300px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
     word-break: normal;
-    margin-right: 60px;
+    margin-right: 70px;
   }
 
   .nav-logo {
@@ -3007,7 +3007,7 @@
     align-items: center;
     width: 30px;
     height: 40px;
-    right: 57px;
+    right: 65px;
   }
 
   .left-arrow-two.arrow-image {
@@ -3017,7 +3017,7 @@
   .right-arrow-two {
     width: 30px;
     height: 40px;
-    right: 20px;
+    right: 25px;
   }
 
   .right-arrow-two.image-arrow-two {
@@ -3037,12 +3037,12 @@
     flex-direction: column;
     top: 20px;
     left: 20px;
-    width: 320px;
+    width: 280px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
     word-break: normal;
-    margin-right: 50px;
+    margin-right: 80px;
   }
 
   .hero-text-inner {
