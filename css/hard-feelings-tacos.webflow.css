@@ -4084,7 +4084,7 @@
   }
   
   /* Allow mid-word breaking for usernames/handles on mobile */
-  .upcoming-popups-container .event-item h3.username-handle {
+  .upcoming-popups-container .event-item h3.username-handle.heading-two.heading-brown {
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
     word-break: break-all !important;
@@ -4112,7 +4112,7 @@
   }
   
   /* Allow mid-word breaking for usernames/handles on mobile */
-  .upcoming-popups-container .event-item h3.username-handle {
+  .upcoming-popups-container .event-item h3.username-handle.heading-two.heading-brown {
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
     word-break: break-all !important;
@@ -4293,7 +4293,7 @@ html, body {
   }
   
   /* Allow mid-word breaking for usernames/handles on mobile */
-  .upcoming-popups-container .event-item h3.username-handle {
+  .upcoming-popups-container .event-item h3.username-handle.heading-two.heading-brown {
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
     word-break: break-all !important;
