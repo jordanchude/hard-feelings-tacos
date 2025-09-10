@@ -3632,6 +3632,17 @@
   overflow: visible;
 }
 
+/* Add line breaks for username on mobile only */
+@media screen and (max-width: 767px) {
+  .upcoming-popups-container .event-item h3.username-handle .mobile-break {
+    display: block;
+  }
+  
+  .upcoming-popups-container .event-item h3.username-handle .mobile-break:first-of-type::before {
+    content: "";
+  }
+}
+
 .social-link-text {
   background-color: var(--primary-salmon);
   color: white;
