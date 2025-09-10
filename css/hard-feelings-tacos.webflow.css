@@ -3622,12 +3622,12 @@
   white-space: normal;
 }
 
-/* Allow mid-word breaking for usernames/handles that are too long */
+/* Allow mid-word breaking for usernames/handles that are too long - desktop normal */
 .upcoming-popups-container .event-item h3.username-handle {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  word-break: break-all;
-  white-space: normal !important;
+  word-wrap: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+  white-space: normal;
   max-width: 100%;
   overflow: visible;
 }
