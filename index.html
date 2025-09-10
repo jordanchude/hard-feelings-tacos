@@ -232,8 +232,8 @@
         <p class="paragraph-one paragraph-white event-text">Hard Feelings Tacos partners with coffee shops, small businesses, and community spaces across New York City to bring the flavors of Texas breakfast tacos to new tables. These pop-ups turn everyday spots into gatherings, where warm tortillas meet good people.<br><br>Whether it's a café, a neighborhood shop, or a community event, we love showing up with tacos that make everyone feel at home. If you'd like to host a pop-up, let's talk.</p>
       </div>
       <div class="event-forum-container">
-        <div class="form-block w-form">
-          <form id="wf-form-event-form" name="wf-form-event-form" data-name="popup booking form" class="event-form" data-wf-page-id="68bcf90e3f5b8f914341e570" data-wf-element-id="178bbd6f-46c7-f746-6b1c-d299a372288c">
+        <div class="form-block">
+          <form id="custom-contact-form" name="custom-contact-form" class="event-form">
             <div class="ef-topfields"><input class="event-fourm-field eff-name w-input" maxlength="256" name="Name" data-name="Name" placeholder="Your name" type="text" id="Name" required=""><input class="event-fourm-field eff-email w-input" maxlength="256" name="Email-address" data-name="Email address" placeholder="Your email address" type="email" id="Email-address" required=""></div><textarea id="description" name="description" maxlength="5000" data-name="description" placeholder="Tell us about your event! Include: event type, date, location, expected number of people, and any special requests." class="event-fourm-field eff-des w-input"></textarea><input type="submit" data-wait="Please wait..." class="primary-cta form-cta w-button" value="Send Pop-up Request">
           </form>
           <div class="success-message w-form-done">
@@ -361,7 +361,7 @@
   <!-- Fix contact form auto-fill issue -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const form = document.getElementById('wf-form-event-form');
+      const form = document.getElementById('custom-contact-form');
       
       if (form) {
         form.addEventListener('submit', function(e) {
@@ -381,12 +381,13 @@
           // Open email client
           window.location.href = mailtoLink;
           
-          // Show success message
-          const successMessage = form.querySelector('.success-message');
-          if (successMessage) {
-            successMessage.style.display = 'block';
-            form.style.display = 'none';
-          }
+          // Hide any error messages that might appear
+          setTimeout(function() {
+            const errorMessage = form.querySelector('.w-form-fail');
+            if (errorMessage) {
+              errorMessage.style.display = 'none';
+            }
+          }, 100);
         });
       }
     });
