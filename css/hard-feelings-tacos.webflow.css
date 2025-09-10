@@ -2635,6 +2635,7 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
+    word-break: normal;
     margin-right: 60px;
   }
 
@@ -2979,7 +2980,9 @@
 
   .paragraph-one {
     white-space: normal;
-    word-break: break-all;
+    word-break: normal;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   .paragraph-one.hero-paragraph {
@@ -2988,6 +2991,7 @@
     overflow-wrap: break-word;
     hyphens: auto;
     word-break: normal;
+    line-height: 1.7;
   }
 
   .paragraph-one.paragraph-white.ov-paragraph-two {
@@ -3037,6 +3041,7 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
+    word-break: normal;
     margin-right: 50px;
   }
 
@@ -3592,7 +3597,7 @@
   color: var(--n-brown);
   word-wrap: break-word;
   overflow-wrap: break-word;
-  word-break: break-word;
+  word-break: normal;
   hyphens: auto;
   text-align: center;
   line-height: 1.3;
@@ -3631,12 +3636,22 @@
   font-size: 20px !important;
   font-weight: 400 !important;
   font-family: Inter, sans-serif !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+  white-space: normal;
 }
 
 /* Override any paragraph-two styles specifically for this section */
 .follow-rebecca-container p.follow-rebecca-description {
   font-size: 20px !important;
   color: #48292d !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+  hyphens: auto !important;
+  white-space: normal !important;
 }
 
 .follow-rebecca-social {
@@ -3897,14 +3912,21 @@
     color: #48292d !important;
     font-weight: 400 !important;
     font-family: Inter, sans-serif !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: auto !important;
+    white-space: normal !important;
 }
 
 
 
 /* Prevent awkward word breaks in hero text */
 .hero-paragraph {
-  word-break: keep-all;
+  word-break: normal;
   overflow-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.6;
 }
 
 @media screen and (max-width: 767px) {
@@ -3912,6 +3934,7 @@
     word-break: normal;
     overflow-wrap: break-word;
     hyphens: auto;
+    line-height: 1.7;
   }
 }
 
@@ -3920,20 +3943,22 @@
 .hero-slider-paragraph,
 .slider-paragraph-name-container p,
 .slider-paragraph-name-container .heading-five {
-  word-break: keep-all !important;
+  word-break: normal !important;
   overflow-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.5;
 }
 
 @media screen and (max-width: 767px) {
   .hero-slider-paragraph,
   .slider-paragraph-name-container p,
   .slider-paragraph-name-container .heading-five {
-    word-break: keep-all !important;
+    word-break: normal !important;
     overflow-wrap: break-word;
     white-space: normal;
-    hyphens: none;
+    hyphens: auto;
     font-size: 14px !important;
-    line-height: 18px !important;
+    line-height: 1.6 !important;
   }
 }
 
@@ -3948,6 +3973,7 @@
     hyphens: auto;
     line-height: 1.6;
     text-align: left;
+    white-space: normal;
   }
 }
 
@@ -3961,10 +3987,32 @@
     line-height: 1.7;
     text-align: left;
     font-size: 16px;
+    white-space: normal;
   }
   
   .paragraph-one.paragraph-brown.au-paragraph-two {
     margin-left: 16px;
+  }
+}
+
+/* Universal text wrapping improvements for all text elements */
+p, .paragraph-one, .paragraph-two, h1, h2, h3, h4, h5, h6 {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+  white-space: normal;
+}
+
+/* Ensure proper text wrapping on mobile devices */
+@media screen and (max-width: 767px) {
+  p, .paragraph-one, .paragraph-two, h1, h2, h3, h4, h5, h6 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: auto;
+    white-space: normal;
+    line-height: 1.5;
   }
 }
 
@@ -4110,7 +4158,7 @@ html, body {
     line-height: 1.1;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    word-break: break-word;
+    word-break: normal;
     hyphens: auto;
     text-align: center;
   }
@@ -4154,6 +4202,16 @@ html, body {
     max-width: none !important;
     display: inline-flex !important;
     white-space: nowrap !important;
+  }
+
+  /* Ensure proper text wrapping on very small screens */
+  p, .paragraph-one, .paragraph-two, h1, h2, h3, h4, h5, h6 {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: auto !important;
+    white-space: normal !important;
+    line-height: 1.6 !important;
   }
 
   .toggle-container {
@@ -4219,6 +4277,16 @@ html, body {
     max-width: none !important;
     display: inline-flex !important;
     white-space: nowrap !important;
+  }
+
+  /* Ensure proper text wrapping on very small screens */
+  p, .paragraph-one, .paragraph-two, h1, h2, h3, h4, h5, h6 {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: auto !important;
+    white-space: normal !important;
+    line-height: 1.6 !important;
   }
 
   .toggle-container {
