@@ -603,7 +603,7 @@
   }
   
   .slider-image-container {
-    margin-top: 100px;
+    margin-top: 140px;
     margin-left: -35px;
     height: 85%;
     justify-content: center;
@@ -631,7 +631,7 @@
   }
   
   .slider-image-container {
-    margin-top: 120px;
+    margin-top: 145px;
     margin-left: -35px;
     height: 80%;
     justify-content: center;
@@ -683,6 +683,10 @@
 .primary-cta.menu-cta {
   margin-top: 16px;
   display: flex;
+}
+
+.primary-cta-text {
+  white-space: nowrap;
 }
 
 .colorblock-secondary {
@@ -762,8 +766,9 @@
   object-fit: cover;
   border-radius: 70px;
   width: 100%;
-  height: 80%;
+  height: 70%;
   overflow: hidden;
+  margin-top: -10px;
 }
 
 .nav-container {
@@ -2210,7 +2215,8 @@
   }
 
   .slider-image {
-    height: 90%;
+    height: 70%;
+    margin-top: -10px;
   }
 
   .collection-item {
@@ -2225,7 +2231,8 @@
 
   .slider-image {
     width: 90%;
-    height: 90%;
+    height: 70%;
+    margin-top: -10px;
   }
 
   .ham-container {
@@ -2289,7 +2296,8 @@
 
 @media screen and (max-width: 991px) {
   .slider-image {
-    height: 90%;
+    height: 70%;
+    margin-top: -10px;
   }
 
 
@@ -2600,6 +2608,7 @@
 
   .heading-five.heading-white.primary-cta-text {
     font-weight: 400;
+    white-space: nowrap;
   }
 
   .heading-five.nav-heading.nav-main.mobile-oo-cta {
@@ -2636,7 +2645,9 @@
     overflow-wrap: break-word;
     hyphens: auto;
     word-break: normal;
-    margin-right: 70px;
+    margin-right: 30px;
+    top: 10px;
+    left: 20px;
   }
 
   .nav-logo {
@@ -2880,7 +2891,7 @@
 
   .hero-slider-container {
     width: 100%;
-    height: 500px;
+    height: 700px;
     border-radius: 32px;
   }
 
@@ -2976,6 +2987,8 @@
     hyphens: auto;
     font-size: 16px;
     line-height: 20px;
+    white-space: normal !important;
+    word-break: normal !important;
   }
 
   .paragraph-one {
@@ -3035,14 +3048,14 @@
 
   .slider-paragraph-name-container {
     flex-direction: column;
-    top: 20px;
+    top: 10px;
     left: 20px;
     width: 280px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
     word-break: normal;
-    margin-right: 80px;
+    margin-right: 40px;
   }
 
   .hero-text-inner {
@@ -3939,26 +3952,33 @@
 }
 
 
-/* Prevent awkward word breaks in slideshow ingredient names */
-.hero-slider-paragraph,
-.slider-paragraph-name-container p,
-.slider-paragraph-name-container .heading-five {
+/* CRITICAL: Force text wrapping for slider descriptions */
+.slider-paragraph-name-container .heading-five.hero-slider-paragraph {
+  white-space: normal !important;
+  word-wrap: normal !important;
+  overflow-wrap: normal !important;
   word-break: normal !important;
-  overflow-wrap: break-word;
-  hyphens: auto;
-  line-height: 1.5;
+  hyphens: none !important;
+  line-height: 1.5 !important;
+  max-width: 100% !important;
 }
 
+/* Prevent ingredient names from breaking on mobile */
 @media screen and (max-width: 767px) {
-  .hero-slider-paragraph,
-  .slider-paragraph-name-container p,
-  .slider-paragraph-name-container .heading-five {
+  .slider-paragraph-name-container .heading-five:not(.hero-slider-paragraph) {
+    white-space: nowrap !important;
+    overflow: visible !important;
+  }
+  
+  /* CRITICAL: Force text wrapping for slider descriptions on mobile */
+  .slider-paragraph-name-container .heading-five.hero-slider-paragraph {
+    white-space: normal !important;
+    word-wrap: normal !important;
+    overflow-wrap: normal !important;
     word-break: normal !important;
-    overflow-wrap: break-word;
-    white-space: normal;
-    hyphens: auto;
-    font-size: 14px !important;
+    hyphens: none !important;
     line-height: 1.6 !important;
+    max-width: 100% !important;
   }
 }
 
@@ -4092,7 +4112,7 @@ html, body {
   }
   
   .slider-image-container {
-    margin-top: 120px;
+    margin-top: 145px;
     margin-left: -35px;
     height: 80%;
     justify-content: center;
@@ -4104,7 +4124,7 @@ html, body {
   }
   
   .hero-slider-container {
-    height: 500px;
+    height: 700px;
   }
   
   .restaurant-herocontainer {
@@ -4139,7 +4159,7 @@ html, body {
   }
   
   .hero-slider-container {
-    height: 450px;
+    height: 650px;
     overflow: visible;
   }
   
@@ -4174,7 +4194,7 @@ html, body {
   }
   
   .slider-image-container {
-    margin-top: 120px;
+    margin-top: 145px;
     margin-left: -35px;
     height: 80%;
     justify-content: center;
@@ -4249,7 +4269,7 @@ html, body {
   }
   
   .slider-image-container {
-    margin-top: 120px;
+    margin-top: 145px;
     margin-left: -35px;
     height: 80%;
     justify-content: center;
@@ -4324,7 +4344,7 @@ html, body {
   }
   
   .slider-image-container {
-    margin-top: 120px;
+    margin-top: 145px;
     margin-left: -35px;
     height: 80%;
     justify-content: center;
