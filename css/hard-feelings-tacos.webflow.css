@@ -450,7 +450,8 @@
 }
 
 .paragraph-one.paragraph-brown.au-paragraph-two {
-  margin-left: 32px;
+  margin-left: 0;
+  margin-top: 20px;
 }
 
 .paragraph-one.ue-p {
@@ -4024,23 +4025,51 @@
 @media screen and (max-width: 767px) {
   .paragraph-one.paragraph-brown.au-paragraph-one,
   .paragraph-one.paragraph-brown.au-paragraph-two {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    word-wrap: normal;
+    overflow-wrap: normal;
     word-break: normal;
-    hyphens: auto;
+    hyphens: none;
     line-height: 1.6;
     text-align: left;
     white-space: normal;
+  }
+  
+  /* Add padding under About Us paragraph on mobile */
+  .paragraph-one.paragraph-brown.au-paragraph-two {
+    padding-bottom: 20px;
+  }
+  
+  /* Make form placeholder text wrap on mobile */
+  .event-fourm-field.eff-des {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  .event-fourm-field.eff-des::placeholder {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  /* Prevent mid-word breaks in "Want to host a pop-up?" section */
+  .heading-one.heading-off-white.event-heading,
+  .paragraph-one.paragraph-white.event-text {
+    white-space: normal !important;
+    word-wrap: normal !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: none !important;
   }
 }
 
 @media screen and (max-width: 479px) {
   .paragraph-one.paragraph-brown.au-paragraph-one,
   .paragraph-one.paragraph-brown.au-paragraph-two {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    word-wrap: normal;
+    overflow-wrap: normal;
     word-break: normal;
-    hyphens: auto;
+    hyphens: none;
     line-height: 1.7;
     text-align: left;
     font-size: 16px;
@@ -4048,7 +4077,7 @@
   }
   
   .paragraph-one.paragraph-brown.au-paragraph-two {
-    margin-left: 16px;
+    margin-left: 0;
   }
 }
 
