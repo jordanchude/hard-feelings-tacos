@@ -77,6 +77,8 @@
     }
     textarea { resize: vertical; line-height: 1.5; min-height: 200px; }
     input:focus, textarea:focus { outline: none; border-color: var(--red); }
+    input:disabled { background: #efe8da; color: var(--muted); cursor: not-allowed; opacity: 0.75; }
+    .locked label, .locked .field-hint { color: var(--muted); opacity: 0.75; }
     .field-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -239,12 +241,12 @@
           <input type="text" id="venue" name="venue" placeholder="Honey Moon Coffee Shop" required>
 
           <div class="form-row">
-            <div>
+            <div id="starts-at-group">
               <label for="starts_at">Date &amp; start time</label>
               <input type="datetime-local" id="starts_at" name="starts_at" required>
               <div class="field-hint">All times in New York time.</div>
             </div>
-            <div>
+            <div id="ends-at-group">
               <label for="ends_at">Date &amp; end time (optional)</label>
               <input type="datetime-local" id="ends_at" name="ends_at">
               <label class="checkbox-label">
@@ -252,7 +254,7 @@
                 <span>Sold out</span>
                 <button type="button" class="info-btn" aria-label="About the Sold out option">
                   i
-                  <span class="info-tip" role="tooltip">Check this when no tickets or spots are left. Visitors will see "Sold Out" next to the pop-up's time.</span>
+                  <span class="info-tip" role="tooltip">When checked, the start and end times become locked. Visitors will see "Sold Out" next to the pop-up's time.</span>
                 </button>
               </label>
             </div>

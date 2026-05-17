@@ -69,12 +69,21 @@
     setTimeout(() => { flash.style.display = 'none'; }, 4000);
   }
 
+  function applySoldOutLock() {
+    const locked = popupForm.is_sold_out.checked;
+    popupForm.starts_at.disabled = locked;
+    popupForm.ends_at.disabled = locked;
+    document.getElementById('starts-at-group').classList.toggle('locked', locked);
+    document.getElementById('ends-at-group').classList.toggle('locked', locked);
+  }
+
   function resetForm() {
     editingId = null;
     popupForm.reset();
     formTitle.textContent = 'Add a new pop-up';
     submitBtn.textContent = 'Add pop-up';
     cancelEditBtn.style.display = 'none';
+    applySoldOutLock();
   }
 
   function startEdit(popup) {
@@ -84,6 +93,7 @@
     popupForm.ends_at.value = popup.ends_at ? toLocalDatetimeValue(popup.ends_at) : '';
     popupForm.is_sold_out.checked = !!popup.is_sold_out;
     popupForm.address.value = popup.address;
+    applySoldOutLock();
     formTitle.textContent = 'Edit pop-up';
     submitBtn.textContent = 'Save changes';
     cancelEditBtn.style.display = 'inline-block';
@@ -159,9 +169,9 @@
 
   popupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const formData = new FormData(popupForm);
-    const startsLocal = formData.get('starts_at');
-    const endsLocal = formData.get('ends_at');
+    // Read input values directly so disabled (Sold out) fields still submit
+    const startsLocal = popupForm.starts_at.value;
+    const endsLocal = popupForm.ends_at.value;
     if (!startsLocal) { showFlash('Start date and time are required.', true); return; }
     const startsIso = new Date(startsLocal).toISOString();
     const endsIso = endsLocal ? new Date(endsLocal).toISOString() : null;
@@ -169,11 +179,11 @@
       showFlash('End time must be after start time.', true); return;
     }
     const payload = {
-      venue: String(formData.get('venue') || '').trim(),
+      venue: popupForm.venue.value.trim(),
       starts_at: startsIso,
       ends_at: endsIso,
-      is_sold_out: !!formData.get('is_sold_out'),
-      address: String(formData.get('address') || '').trim(),
+      is_sold_out: popupForm.is_sold_out.checked,
+      address: popupForm.address.value.trim(),
     };
     if (!payload.venue || !payload.address) { showFlash('Venue and address are required.', true); return; }
 
@@ -192,6 +202,7 @@
   });
 
   cancelEditBtn.addEventListener('click', resetForm);
+  popupForm.is_sold_out.addEventListener('change', applySoldOutLock);
 
   async function loadBio() {
     const { data, error } = await client.from('site_content').select('body').eq('key', 'about_bio').maybeSingle();
