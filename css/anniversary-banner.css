@@ -85,14 +85,29 @@
   50% { transform: scale(1.06); }
 }
 
-@media (max-width: 768px) {
+/*
+  Below 900px the badge + message + countdown stop fitting on one row
+  without an ugly mid-line wrap, so we stack them.
+*/
+@media (max-width: 899px) {
   .anniversary-banner {
     flex-direction: column;
     gap: 8px;
-    padding: 10px 16px;
-    font-size: 13px;
+    padding: 10px 20px;
+    font-size: 14px;
   }
   .ab-divider { display: none; }
-  .ab-badge { font-size: 12px; padding: 3px 10px; }
-  .ab-countdown { font-size: 12px; padding: 3px 10px; }
+  .ab-badge { font-size: 13px; padding: 3px 11px; }
+  .ab-countdown { font-size: 13px; padding: 3px 11px; }
+}
+
+/* Tighten further on phones. */
+@media (max-width: 479px) {
+  .anniversary-banner {
+    padding: 8px 14px;
+    font-size: 13px;
+    gap: 6px;
+  }
+  .ab-badge { font-size: 12px; padding: 3px 10px; letter-spacing: 0.5px; }
+  .ab-countdown { font-size: 12px; padding: 3px 10px; letter-spacing: 0.5px; }
 }
