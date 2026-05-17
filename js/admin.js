@@ -273,7 +273,13 @@
     e.preventDefault();
     recoveryError.style.display = 'none';
     const password = recoveryForm.password.value;
+    const confirm = recoveryForm.confirm.value;
     const submitBtn = recoveryForm.querySelector('button[type=submit]');
+    if (password !== confirm) {
+      recoveryError.textContent = 'Passwords do not match.';
+      recoveryError.style.display = 'block';
+      return;
+    }
     submitBtn.disabled = true;
     const { error } = await client.auth.updateUser({ password });
     submitBtn.disabled = false;
