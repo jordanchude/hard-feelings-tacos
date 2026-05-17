@@ -2,25 +2,27 @@
   const client = window.supabase.createClient(window.HFT_SUPABASE_URL, window.HFT_SUPABASE_KEY);
   const tz = window.HFT_SUPABASE_TZ || 'America/New_York';
 
-  function formatDateLine(isoString, statusNote) {
+  function formatTime(isoString) {
     const date = new Date(isoString);
-    const weekday = date.toLocaleDateString('en-US', { weekday: 'long', timeZone: tz });
-    const month = date.toLocaleDateString('en-US', { month: 'long', timeZone: tz });
-    const day = date.toLocaleDateString('en-US', { day: 'numeric', timeZone: tz });
-
-    const hour24Str = date.toLocaleString('en-US', { hour: 'numeric', hour12: false, timeZone: tz });
-    const minuteStr = date.toLocaleString('en-US', { minute: '2-digit', timeZone: tz });
-    const hour24 = parseInt(hour24Str, 10);
-    const minute = parseInt(minuteStr, 10);
-    const isPm = hour24 >= 12;
+    const hour24 = parseInt(date.toLocaleString('en-US', { hour: 'numeric', hour12: false, timeZone: tz }), 10);
+    const minute = parseInt(date.toLocaleString('en-US', { minute: '2-digit', timeZone: tz }), 10);
     const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
     const minStr = minute === 0 ? '' : ':' + String(minute).padStart(2, '0');
-    const ampm = isPm ? 'pm' : 'am';
+    const ampm = hour24 >= 12 ? 'pm' : 'am';
+    return `${hour12}${minStr}${ampm}`;
+  }
 
-    let line = `${weekday}, ${month} ${day} • ${hour12}${minStr}${ampm}`;
-    if (statusNote && statusNote.trim()) {
-      line += ` – ${statusNote.trim()}`;
-    }
+  function formatDateLine(startIso, endIso, isSoldOut) {
+    const startDate = new Date(startIso);
+    const weekday = startDate.toLocaleDateString('en-US', { weekday: 'long', timeZone: tz });
+    const month = startDate.toLocaleDateString('en-US', { month: 'long', timeZone: tz });
+    const day = startDate.toLocaleDateString('en-US', { day: 'numeric', timeZone: tz });
+
+    let timeRange = formatTime(startIso);
+    if (endIso) timeRange += ` – ${formatTime(endIso)}`;
+
+    let line = `${weekday}, ${month} ${day} • ${timeRange}`;
+    if (isSoldOut) line += ' • Sold Out';
     return line;
   }
 
@@ -47,7 +49,7 @@
 
       const dateLine = document.createElement('p');
       dateLine.className = 'paragraph-one paragraph-brown';
-      dateLine.textContent = formatDateLine(p.starts_at, p.status_note);
+      dateLine.textContent = formatDateLine(p.starts_at, p.ends_at, p.is_sold_out);
 
       const address = document.createElement('p');
       address.className = 'paragraph-one paragraph-brown';
@@ -65,22 +67,9 @@
     const pastEl = document.getElementById('past-events');
     if (!upcomingEl || !pastEl) return;
 
-    const nowIso = new Date().toISOString();
-
-    const { data: upcoming, error: upErr } = await client
-      .from('popups')
-      .select('*')
-      .gte('starts_at', nowIso)
-      .order('starts_at', { ascending: true });
-
-    const { data: past, error: pastErr } = await client
-      .from('popups')
-      .select('*')
-      .lt('starts_at', nowIso)
-      .order('starts_at', { ascending: false });
-
-    if (upErr || pastErr) {
-      console.error('Failed to load pop-ups', upErr || pastErr);
+    const { data, error } = await client.from('popups').select('*');
+    if (error) {
+      console.error('Failed to load pop-ups', error);
       const msg = document.createElement('p');
       msg.className = 'paragraph-one paragraph-brown';
       msg.style.textAlign = 'center';
@@ -90,8 +79,17 @@
       return;
     }
 
-    renderList(upcomingEl, upcoming || []);
-    renderList(pastEl, past || []);
+    const now = Date.now();
+    const popups = data || [];
+    const upcoming = popups
+      .filter((p) => new Date(p.ends_at || p.starts_at).getTime() >= now)
+      .sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at));
+    const past = popups
+      .filter((p) => new Date(p.ends_at || p.starts_at).getTime() < now)
+      .sort((a, b) => new Date(b.starts_at) - new Date(a.starts_at));
+
+    renderList(upcomingEl, upcoming);
+    renderList(pastEl, past);
   }
 
   if (document.readyState === 'loading') {

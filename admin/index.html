@@ -79,6 +79,8 @@
     .btn-danger:hover { background: var(--danger); color: white; }
 
     .form-actions { margin-top: 18px; display: flex; gap: 8px; }
+    .checkbox-label { display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 14px; margin: 16px 0 0; cursor: pointer; }
+    .checkbox-label input[type=checkbox] { width: auto; }
 
     .admin-card {
       display: flex; align-items: flex-start; justify-content: space-between;
@@ -151,17 +153,22 @@
             <div>
               <label for="starts_at">Date &amp; start time</label>
               <input type="datetime-local" id="starts_at" name="starts_at" required>
-              <div class="field-hint">Times are in New York time.</div>
+              <div class="field-hint">All times in New York time.</div>
             </div>
             <div>
-              <label for="status_note">Status note (optional)</label>
-              <input type="text" id="status_note" name="status_note" placeholder="Sold Out">
-              <div class="field-hint">Shows after the time, e.g. "Sold Out".</div>
+              <label for="ends_at">Date &amp; end time (optional)</label>
+              <input type="datetime-local" id="ends_at" name="ends_at">
+              <div class="field-hint">Leave blank if you don't have one yet.</div>
             </div>
           </div>
 
           <label for="address">Address</label>
           <input type="text" id="address" name="address" placeholder="517 Onderdonk Ave, Ridgewood, NY 11385" required>
+
+          <label class="checkbox-label">
+            <input type="checkbox" id="is_sold_out" name="is_sold_out">
+            Sold out
+          </label>
 
           <div class="form-actions">
             <button type="submit" id="submit-btn" class="btn btn-primary">Add pop-up</button>

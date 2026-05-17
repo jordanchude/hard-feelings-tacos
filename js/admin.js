@@ -31,11 +31,21 @@
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
   }
 
-  function formatDateDisplay(iso, statusNote) {
-    const date = new Date(iso);
-    const opts = { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true, timeZone: tz };
-    let s = date.toLocaleString('en-US', opts).replace(' AM', 'am').replace(' PM', 'pm');
-    if (statusNote && statusNote.trim()) s += ` – ${statusNote.trim()}`;
+  function formatTimeShort(iso) {
+    const d = new Date(iso);
+    const hour24 = parseInt(d.toLocaleString('en-US', { hour: 'numeric', hour12: false, timeZone: tz }), 10);
+    const minute = parseInt(d.toLocaleString('en-US', { minute: '2-digit', timeZone: tz }), 10);
+    const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+    const minStr = minute === 0 ? '' : ':' + String(minute).padStart(2, '0');
+    return `${hour12}${minStr}${hour24 >= 12 ? 'pm' : 'am'}`;
+  }
+
+  function formatDateDisplay(startIso, endIso, isSoldOut) {
+    const d = new Date(startIso);
+    const dayPart = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: tz });
+    let s = `${dayPart} • ${formatTimeShort(startIso)}`;
+    if (endIso) s += ` – ${formatTimeShort(endIso)}`;
+    if (isSoldOut) s += ' • Sold Out';
     return s;
   }
 
@@ -58,7 +68,8 @@
     editingId = popup.id;
     popupForm.venue.value = popup.venue;
     popupForm.starts_at.value = toLocalDatetimeValue(popup.starts_at);
-    popupForm.status_note.value = popup.status_note || '';
+    popupForm.ends_at.value = popup.ends_at ? toLocalDatetimeValue(popup.ends_at) : '';
+    popupForm.is_sold_out.checked = !!popup.is_sold_out;
     popupForm.address.value = popup.address;
     formTitle.textContent = 'Edit pop-up';
     submitBtn.textContent = 'Save changes';
@@ -84,7 +95,7 @@
       const venue = document.createElement('strong');
       venue.textContent = p.venue;
       const date = document.createElement('div');
-      date.textContent = formatDateDisplay(p.starts_at, p.status_note);
+      date.textContent = formatDateDisplay(p.starts_at, p.ends_at, p.is_sold_out);
       const addr = document.createElement('div');
       addr.className = 'muted';
       addr.textContent = p.address;
@@ -110,21 +121,22 @@
   }
 
   async function loadAdminPopups() {
-    const nowIso = new Date().toISOString();
-    const { data: upcoming, error: upErr } = await client
-      .from('popups').select('*').gte('starts_at', nowIso).order('starts_at', { ascending: true });
-    const { data: past, error: pastErr } = await client
-      .from('popups').select('*').lt('starts_at', nowIso).order('starts_at', { ascending: false });
-    if (upErr || pastErr) {
-      showFlash('Failed to load pop-ups: ' + (upErr || pastErr).message, true);
-      return;
-    }
-    renderAdminList(upcomingList, upcoming || []);
-    renderAdminList(pastList, past || []);
+    const { data, error } = await client.from('popups').select('*');
+    if (error) { showFlash('Failed to load pop-ups: ' + error.message, true); return; }
+    const now = Date.now();
+    const popups = data || [];
+    const upcoming = popups
+      .filter((p) => new Date(p.ends_at || p.starts_at).getTime() >= now)
+      .sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at));
+    const past = popups
+      .filter((p) => new Date(p.ends_at || p.starts_at).getTime() < now)
+      .sort((a, b) => new Date(b.starts_at) - new Date(a.starts_at));
+    renderAdminList(upcomingList, upcoming);
+    renderAdminList(pastList, past);
   }
 
   async function deletePopup(popup) {
-    if (!confirm(`Delete "${popup.venue}" on ${formatDateDisplay(popup.starts_at)}?`)) return;
+    if (!confirm(`Delete "${popup.venue}" on ${formatDateDisplay(popup.starts_at, popup.ends_at, popup.is_sold_out)}?`)) return;
     const { error } = await client.from('popups').delete().eq('id', popup.id);
     if (error) { showFlash('Delete failed: ' + error.message, true); return; }
     showFlash('Pop-up deleted.');
@@ -135,12 +147,19 @@
   popupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(popupForm);
-    const localDatetime = formData.get('starts_at');
-    if (!localDatetime) { showFlash('Date and time are required.', true); return; }
+    const startsLocal = formData.get('starts_at');
+    const endsLocal = formData.get('ends_at');
+    if (!startsLocal) { showFlash('Start date and time are required.', true); return; }
+    const startsIso = new Date(startsLocal).toISOString();
+    const endsIso = endsLocal ? new Date(endsLocal).toISOString() : null;
+    if (endsIso && new Date(endsIso) <= new Date(startsIso)) {
+      showFlash('End time must be after start time.', true); return;
+    }
     const payload = {
       venue: String(formData.get('venue') || '').trim(),
-      starts_at: new Date(localDatetime).toISOString(),
-      status_note: String(formData.get('status_note') || '').trim() || null,
+      starts_at: startsIso,
+      ends_at: endsIso,
+      is_sold_out: !!formData.get('is_sold_out'),
       address: String(formData.get('address') || '').trim(),
     };
     if (!payload.venue || !payload.address) { showFlash('Venue and address are required.', true); return; }
