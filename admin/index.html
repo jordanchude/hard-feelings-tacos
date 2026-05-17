@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Hard Feelings Tacos — Admin</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta name="robots" content="noindex, nofollow">
+  <link href="../images/favicon.png" rel="shortcut icon" type="image/x-icon">
+  <link href="../images/webclip.png" rel="apple-touch-icon">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({  google: {    families: ["Bungee:regular","Inter:300,regular,500"]  }});</script>
+  <style>
+    :root {
+      --red: #AD1F2E;
+      --brown: #4A2E20;
+      --cream: #F7F1E8;
+      --off-white: #FBF8F2;
+      --muted: #8a7a6e;
+      --border: #e4dccf;
+      --danger: #b13a3a;
+      --success: #2f7a44;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--brown);
+      margin: 0;
+      padding: 24px;
+      line-height: 1.5;
+    }
+    @media (max-width: 540px) {
+      body { padding: 16px; }
+    }
+    h1, h2 { font-family: 'Bungee', sans-serif; color: var(--red); margin: 0 0 12px; line-height: 1.1; }
+    h1 { font-size: 32px; }
+    h2 { font-size: 22px; margin-top: 32px; }
+    @media (max-width: 540px) {
+      h1 { font-size: 24px; }
+      h2 { font-size: 18px; margin-top: 24px; }
+    }
+    .container { max-width: 760px; margin: 0 auto; }
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px; margin-bottom: 24px;
+    }
+    .header-left { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .header-left img { height: 48px; }
+    .header-user {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; color: var(--muted); flex-wrap: wrap;
+    }
+    .header-user strong { color: var(--brown); word-break: break-all; }
+    @media (max-width: 540px) {
+      .header-left img { height: 36px; }
+      .header-user { font-size: 13px; }
+    }
+
+    .card {
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 540px) {
+      .card { padding: 16px; }
+    }
+
+    label { display: block; font-weight: 500; margin: 12px 0 6px; font-size: 14px; }
+    input[type=email], input[type=password], input[type=text], input[type=datetime-local], textarea {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+      border-radius: 6px; font-size: 15px; font-family: inherit;
+      background: white; color: var(--brown);
+    }
+    textarea { resize: vertical; line-height: 1.5; min-height: 200px; }
+    input:focus, textarea:focus { outline: none; border-color: var(--red); }
+    input:disabled { background: #efe8da; color: var(--muted); cursor: not-allowed; opacity: 0.75; }
+    .locked label, .locked .field-hint { color: var(--muted); opacity: 0.75; }
+    .field-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 540px) { .form-row { grid-template-columns: 1fr; } }
+
+    .btn {
+      display: inline-block; padding: 10px 18px; border: none; border-radius: 6px;
+      font-family: inherit; font-size: 14px; font-weight: 500;
+      cursor: pointer; text-decoration: none;
+    }
+    .btn-primary { background: var(--red); color: white; }
+    .btn-primary:hover { background: #8a1a26; }
+    .btn-primary:disabled { background: #b87680; cursor: not-allowed; }
+    .btn-secondary { background: transparent; color: var(--brown); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--cream); }
+    .btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
+    .btn-danger:hover { background: var(--danger); color: white; }
+
+    .form-actions { margin-top: 18px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .checkbox-label { display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 14px; margin: 10px 0 0; cursor: pointer; }
+    .checkbox-label input[type=checkbox] { width: auto; }
+
+    .info-btn {
+      position: relative;
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px; padding: 0; margin-left: 2px;
+      border-radius: 50%; border: 1px solid var(--muted);
+      background: transparent; color: var(--muted);
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+      cursor: help; line-height: 1;
+    }
+    .info-btn:hover, .info-btn:focus { color: var(--red); border-color: var(--red); outline: none; }
+    .info-tip {
+      position: absolute; bottom: calc(100% + 6px); left: 50%;
+      transform: translateX(-50%);
+      width: max-content; max-width: 240px;
+      padding: 8px 10px; border-radius: 6px;
+      background: var(--brown); color: white;
+      font-size: 12px; font-weight: 400; font-style: normal; line-height: 1.4;
+      text-align: left; white-space: normal;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.15s ease;
+      z-index: 10;
+    }
+    .info-tip::after {
+      content: ''; position: absolute; top: 100%; left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent; border-top-color: var(--brown);
+    }
+    .info-btn:hover .info-tip,
+    .info-btn:focus .info-tip,
+    .info-btn.show-tip .info-tip { opacity: 1; }
+    @media (max-width: 540px) {
+      .info-tip { left: auto; right: 0; transform: none; }
+      .info-tip::after { left: auto; right: 6px; transform: none; }
+    }
+
+    .admin-card {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 12px; padding: 14px; border: 1px solid var(--border);
+      border-radius: 8px; margin-bottom: 10px; background: white;
+      flex-wrap: wrap;
+    }
+    .admin-card-info { flex: 1 1 240px; min-width: 0; word-wrap: break-word; }
+    .admin-card-info strong { display: block; font-size: 16px; color: var(--brown); }
+    .admin-card-info .muted { color: var(--muted); font-size: 14px; }
+    .admin-card-actions { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
+    .admin-card-actions .btn { padding: 6px 12px; font-size: 13px; }
+    @media (max-width: 540px) {
+      .admin-card-actions { width: 100%; }
+      .admin-card-actions .btn { flex: 1; }
+    }
+
+    .empty { color: var(--muted); font-style: italic; padding: 8px 0; }
+
+    .flash {
+      position: fixed; top: 20px; right: 20px; padding: 12px 18px;
+      border-radius: 6px; color: white; font-size: 14px; z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none;
+    }
+    .flash.success { background: var(--success); }
+    .flash.error { background: var(--danger); }
+
+    .error-message {
+      background: #fde9e9; color: var(--danger); padding: 10px 12px;
+      border-radius: 6px; font-size: 14px; margin-top: 12px; display: none;
+    }
+
+    .back-link { display: inline-block; margin-top: 24px; color: var(--muted); font-size: 14px; }
+    .link-row { margin: 14px 0 0; font-size: 14px; }
+    .link-row a { color: var(--red); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-left">
+        <img src="../images/hard-feelings-logo.png" alt="Hard Feelings Tacos">
+        <h1>Admin</h1>
+      </div>
+      <div class="header-user" id="header-user-area" style="display: none;">
+        <strong id="user-email"></strong>
+        <button type="button" id="logout-btn" class="btn btn-secondary">Sign out</button>
+      </div>
+    </div>
+
+    <!-- LOGIN VIEW -->
+    <div id="login-view">
+      <div class="card" id="signin-card">
+        <h2>Sign in</h2>
+        <form id="login-form">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" autocomplete="email" required>
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" autocomplete="current-password" required>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Sign in</button>
+          </div>
+          <div id="login-error" class="error-message"></div>
+        </form>
+        <p class="link-row"><a href="#" id="show-forgot-link">Forgot password?</a></p>
+      </div>
+      <div class="card" id="forgot-card" style="display: none;">
+        <h2>Reset password</h2>
+        <form id="forgot-form">
+          <label for="forgot-email">Email</label>
+          <input type="email" id="forgot-email" name="email" autocomplete="email" required>
+          <div class="field-hint">We'll send a password reset link to this address.</div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Send reset link</button>
+            <button type="button" id="cancel-forgot-btn" class="btn btn-secondary">Cancel</button>
+          </div>
+          <div id="forgot-error" class="error-message"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- RECOVERY VIEW (after clicking password reset email) -->
+    <div id="recovery-view" style="display: none;">
+      <div class="card">
+        <h2>Set a new password</h2>
+        <form id="recovery-form">
+          <label for="recovery-password">New password</label>
+          <input type="password" id="recovery-password" name="password" autocomplete="new-password" minlength="8" required>
+          <div class="field-hint">At least 8 characters.</div>
+          <label for="recovery-confirm">Confirm new password</label>
+          <input type="password" id="recovery-confirm" name="confirm" autocomplete="new-password" minlength="8" required>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save new password</button>
+          </div>
+          <div id="recovery-error" class="error-message"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <div id="dashboard-view" style="display: none;">
+      <div class="card">
+        <h2 id="form-title">Add a new pop-up</h2>
+        <form id="popup-form">
+          <label for="venue">Venue name</label>
+          <input type="text" id="venue" name="venue" placeholder="Honey Moon Coffee Shop" required>
+
+          <div class="form-row">
+            <div id="starts-at-group">
+              <label for="starts_at">Date &amp; start time</label>
+              <input type="datetime-local" id="starts_at" name="starts_at" required>
+              <div class="field-hint">All times in New York time.</div>
+            </div>
+            <div id="ends-at-group">
+              <label for="ends_at">Date &amp; end time (optional)</label>
+              <input type="datetime-local" id="ends_at" name="ends_at">
+              <label class="checkbox-label">
+                <input type="checkbox" id="is_sold_out" name="is_sold_out">
+                <span>Sold out</span>
+                <button type="button" class="info-btn" aria-label="About the Sold out option">
+                  i
+                  <span class="info-tip" role="tooltip">When checked, the start and end times become locked. Visitors will see "Sold Out" next to the pop-up's time.</span>
+                </button>
+              </label>
+            </div>
+          </div>
+
+          <label for="address">Address</label>
+          <input type="text" id="address" name="address" placeholder="517 Onderdonk Ave, Ridgewood, NY 11385" required>
+
+          <div class="form-actions">
+            <button type="submit" id="submit-btn" class="btn btn-primary">Add pop-up</button>
+            <button type="button" id="cancel-edit-btn" class="btn btn-secondary" style="display: none;">Cancel edit</button>
+          </div>
+        </form>
+      </div>
+
+      <h2>Upcoming pop-ups</h2>
+      <div id="admin-upcoming-list"></div>
+
+      <h2>Past pop-ups</h2>
+      <div id="admin-past-list"></div>
+
+      <h2>About page bio</h2>
+      <div class="card">
+        <form id="bio-form">
+          <label for="bio-body">Bio text</label>
+          <textarea id="bio-body" name="body" rows="12"></textarea>
+          <div class="field-hint">Shown on the About Us page. Leave a blank line between paragraphs.</div>
+          <div class="form-actions">
+            <button type="submit" id="bio-submit-btn" class="btn btn-primary">Save bio</button>
+          </div>
+        </form>
+      </div>
+
+      <h2>Change password</h2>
+      <div class="card">
+        <form id="change-password-form">
+          <label for="new-password">New password</label>
+          <input type="password" id="new-password" name="password" autocomplete="new-password" minlength="8" required>
+          <div class="field-hint">At least 8 characters.</div>
+          <label for="confirm-password">Confirm new password</label>
+          <input type="password" id="confirm-password" name="confirm" autocomplete="new-password" minlength="8" required>
+          <div class="form-actions">
+            <button type="submit" id="change-password-btn" class="btn btn-primary">Update password</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <a href="../index.html" class="back-link">← Back to site</a>
+  </div>
+
+  <div id="flash" class="flash"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/popups-config.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    // Show/hide the header user area based on dashboard visibility
+    const dashEl = document.getElementById('dashboard-view');
+    const userAreaEl = document.getElementById('header-user-area');
+    new MutationObserver(() => {
+      userAreaEl.style.display = dashEl.style.display === 'block' ? 'flex' : 'none';
+    }).observe(dashEl, { attributes: true, attributeFilter: ['style'] });
+
+    // Info-icon tooltips: toggle on tap (mobile) without toggling the wrapping checkbox-label
+    document.querySelectorAll('.info-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const wasOpen = btn.classList.contains('show-tip');
+        document.querySelectorAll('.info-btn.show-tip').forEach((b) => b.classList.remove('show-tip'));
+        if (!wasOpen) btn.classList.add('show-tip');
+      });
+    });
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.info-btn.show-tip').forEach((b) => b.classList.remove('show-tip'));
+    });
+  </script>
+</body>
+</html>
