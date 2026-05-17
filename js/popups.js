@@ -19,11 +19,10 @@
     const day = startDate.toLocaleDateString('en-US', { day: 'numeric', timeZone: tz });
 
     let timeRange = formatTime(startIso);
-    if (endIso) timeRange += ` – ${formatTime(endIso)}`;
+    if (isSoldOut) timeRange += ' – Sold Out';
+    else if (endIso) timeRange += ` – ${formatTime(endIso)}`;
 
-    let line = `${weekday}, ${month} ${day} • ${timeRange}`;
-    if (isSoldOut) line += ' • Sold Out';
-    return line;
+    return `${weekday}, ${month} ${day} • ${timeRange}`;
   }
 
   function renderList(container, popups) {
