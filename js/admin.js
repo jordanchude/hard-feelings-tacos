@@ -57,8 +57,8 @@
     const d = new Date(startIso);
     const dayPart = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: tz });
     let s = `${dayPart} • ${formatTimeShort(startIso)}`;
-    if (endIso) s += ` – ${formatTimeShort(endIso)}`;
-    if (isSoldOut) s += ' • Sold Out';
+    if (isSoldOut) s += ' – Sold Out';
+    else if (endIso) s += ` – ${formatTimeShort(endIso)}`;
     return s;
   }
 
