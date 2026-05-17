@@ -1,5 +1,5 @@
 (function () {
-  var TARGET = new Date('2026-05-24T12:00:00-04:00').getTime();
+  var TARGET = new Date('2026-05-24T11:00:00-04:00').getTime();
   var EVENT_END = new Date('2026-05-25T00:00:00-04:00').getTime();
 
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
