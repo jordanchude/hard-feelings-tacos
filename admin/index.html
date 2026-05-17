@@ -31,18 +31,32 @@
       padding: 24px;
       line-height: 1.5;
     }
-    h1, h2 { font-family: 'Bungee', sans-serif; color: var(--red); margin: 0 0 12px; }
+    @media (max-width: 540px) {
+      body { padding: 16px; }
+    }
+    h1, h2 { font-family: 'Bungee', sans-serif; color: var(--red); margin: 0 0 12px; line-height: 1.1; }
     h1 { font-size: 32px; }
     h2 { font-size: 22px; margin-top: 32px; }
+    @media (max-width: 540px) {
+      h1 { font-size: 24px; }
+      h2 { font-size: 18px; margin-top: 24px; }
+    }
     .container { max-width: 760px; margin: 0 auto; }
     .header {
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 12px; margin-bottom: 24px;
     }
-    .header-left { display: flex; align-items: center; gap: 16px; }
+    .header-left { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
     .header-left img { height: 48px; }
-    .header-user { font-size: 14px; color: var(--muted); }
-    .header-user strong { color: var(--brown); margin-right: 8px; }
+    .header-user {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; color: var(--muted); flex-wrap: wrap;
+    }
+    .header-user strong { color: var(--brown); word-break: break-all; }
+    @media (max-width: 540px) {
+      .header-left img { height: 36px; }
+      .header-user { font-size: 13px; }
+    }
 
     .card {
       background: var(--off-white);
@@ -50,6 +64,9 @@
       border-radius: 10px;
       padding: 20px;
       margin-bottom: 16px;
+    }
+    @media (max-width: 540px) {
+      .card { padding: 16px; }
     }
 
     label { display: block; font-weight: 500; margin: 12px 0 6px; font-size: 14px; }
@@ -78,20 +95,60 @@
     .btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
     .btn-danger:hover { background: var(--danger); color: white; }
 
-    .form-actions { margin-top: 18px; display: flex; gap: 8px; }
-    .checkbox-label { display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 14px; margin: 16px 0 0; cursor: pointer; }
+    .form-actions { margin-top: 18px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .checkbox-label { display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 14px; margin: 10px 0 0; cursor: pointer; }
     .checkbox-label input[type=checkbox] { width: auto; }
+
+    .info-btn {
+      position: relative;
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px; padding: 0; margin-left: 2px;
+      border-radius: 50%; border: 1px solid var(--muted);
+      background: transparent; color: var(--muted);
+      font-family: 'Inter', sans-serif; font-size: 11px; font-style: italic; font-weight: 600;
+      cursor: help; line-height: 1;
+    }
+    .info-btn:hover, .info-btn:focus { color: var(--red); border-color: var(--red); outline: none; }
+    .info-tip {
+      position: absolute; bottom: calc(100% + 6px); left: 50%;
+      transform: translateX(-50%);
+      width: max-content; max-width: 240px;
+      padding: 8px 10px; border-radius: 6px;
+      background: var(--brown); color: white;
+      font-size: 12px; font-weight: 400; font-style: normal; line-height: 1.4;
+      text-align: left; white-space: normal;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.15s ease;
+      z-index: 10;
+    }
+    .info-tip::after {
+      content: ''; position: absolute; top: 100%; left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent; border-top-color: var(--brown);
+    }
+    .info-btn:hover .info-tip,
+    .info-btn:focus .info-tip,
+    .info-btn.show-tip .info-tip { opacity: 1; }
+    @media (max-width: 540px) {
+      .info-tip { left: auto; right: 0; transform: none; }
+      .info-tip::after { left: auto; right: 6px; transform: none; }
+    }
 
     .admin-card {
       display: flex; align-items: flex-start; justify-content: space-between;
       gap: 12px; padding: 14px; border: 1px solid var(--border);
       border-radius: 8px; margin-bottom: 10px; background: white;
+      flex-wrap: wrap;
     }
-    .admin-card-info { flex: 1; min-width: 0; }
+    .admin-card-info { flex: 1 1 240px; min-width: 0; word-wrap: break-word; }
     .admin-card-info strong { display: block; font-size: 16px; color: var(--brown); }
     .admin-card-info .muted { color: var(--muted); font-size: 14px; }
-    .admin-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .admin-card-actions { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
     .admin-card-actions .btn { padding: 6px 12px; font-size: 13px; }
+    @media (max-width: 540px) {
+      .admin-card-actions { width: 100%; }
+      .admin-card-actions .btn { flex: 1; }
+    }
 
     .empty { color: var(--muted); font-style: italic; padding: 8px 0; }
 
@@ -190,17 +247,19 @@
             <div>
               <label for="ends_at">Date &amp; end time (optional)</label>
               <input type="datetime-local" id="ends_at" name="ends_at">
-              <div class="field-hint">Leave blank if you don't have one yet.</div>
+              <label class="checkbox-label">
+                <input type="checkbox" id="is_sold_out" name="is_sold_out">
+                <span>Sold out</span>
+                <button type="button" class="info-btn" aria-label="About the Sold out option">
+                  i
+                  <span class="info-tip" role="tooltip">Check this when no tickets or spots are left. Visitors will see "Sold Out" next to the pop-up's time.</span>
+                </button>
+              </label>
             </div>
           </div>
 
           <label for="address">Address</label>
           <input type="text" id="address" name="address" placeholder="517 Onderdonk Ave, Ridgewood, NY 11385" required>
-
-          <label class="checkbox-label">
-            <input type="checkbox" id="is_sold_out" name="is_sold_out">
-            Sold out
-          </label>
 
           <div class="form-actions">
             <button type="submit" id="submit-btn" class="btn btn-primary">Add pop-up</button>
@@ -255,6 +314,20 @@
     new MutationObserver(() => {
       userAreaEl.style.display = dashEl.style.display === 'block' ? 'flex' : 'none';
     }).observe(dashEl, { attributes: true, attributeFilter: ['style'] });
+
+    // Info-icon tooltips: toggle on tap (mobile) without toggling the wrapping checkbox-label
+    document.querySelectorAll('.info-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const wasOpen = btn.classList.contains('show-tip');
+        document.querySelectorAll('.info-btn.show-tip').forEach((b) => b.classList.remove('show-tip'));
+        if (!wasOpen) btn.classList.add('show-tip');
+      });
+    });
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.info-btn.show-tip').forEach((b) => b.classList.remove('show-tip'));
+    });
   </script>
 </body>
 </html>
