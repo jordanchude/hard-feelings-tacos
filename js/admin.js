@@ -292,7 +292,9 @@
   changePasswordForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const password = changePasswordForm.password.value;
+    const confirm = changePasswordForm.confirm.value;
     if (password.length < 8) { showFlash('Password must be at least 8 characters.', true); return; }
+    if (password !== confirm) { showFlash('Passwords do not match.', true); return; }
     changePasswordBtn.disabled = true;
     const { error } = await client.auth.updateUser({ password });
     changePasswordBtn.disabled = false;
