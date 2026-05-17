@@ -1,0 +1,121 @@
+/*
+  Responsive fixes for the hero layout between 768px and 1499px.
+
+  The default Webflow layout puts hero text (50% width) next to a
+  fixed-694px slider, which only fits viewports ~1500px+. Below 768px
+  the layout already stacks. This fills the wide gap in between.
+*/
+@media screen and (min-width: 768px) and (max-width: 1499px) {
+  .restaurant-herocontainer {
+    margin-top: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .restaurant-hero-container-inner {
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 40px;
+    max-width: 760px;
+    width: 100%;
+  }
+
+  .hero-text-container {
+    width: 100%;
+    padding-right: 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-text-inner.letter-animation,
+  .hero-text-individual.hti-one {
+    width: 100%;
+    text-align: center;
+  }
+
+  .heading-one.heading-red.hero-heading {
+    width: 100%;
+    font-size: 64px;
+    line-height: 1.05;
+    text-align: center;
+  }
+
+  .hero-subtitle,
+  .paragraph-one.hero-paragraph {
+    text-align: center;
+  }
+
+  .primary-cta.menu-cta {
+    align-self: center;
+  }
+
+  .hero-rotating-text-container {
+    width: 100%;
+    margin-left: 0;
+    left: 0;
+  }
+
+  .hero-slider-container {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    aspect-ratio: 694 / 860;
+    margin-left: auto;
+    margin-right: auto;
+    flex-shrink: 1;
+  }
+}
+
+/*
+  Navbar fix for tablet widths (768-991px). The default `.nav-logo` has
+  `margin-left: -50px` and `.nav-container` has no `justify-content`, which
+  pushes the logo off-screen and collides the hamburger with the logo.
+*/
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .nav-container {
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .nav-logo {
+    margin-left: 0;
+    width: auto;
+  }
+
+  .ham-container {
+    margin-right: 0;
+  }
+}
+
+/*
+  Hero heading should never break a word with a hyphen — keep the brand
+  copy readable.
+*/
+.heading-one.heading-red.hero-heading,
+.heading-one.heading-red.about-us-heading,
+.hero-subtitle,
+.paragraph-one {
+  hyphens: manual;
+  -webkit-hyphens: manual;
+}
+
+.heading-one.heading-red.hero-heading,
+.heading-one.heading-red.about-us-heading {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/*
+  Prevent the document from ever showing a horizontal scrollbar on
+  narrow viewports — any sub-pixel overflow gets clipped instead.
+*/
+@media screen and (max-width: 1499px) {
+  html, body {
+    overflow-x: hidden;
+  }
+}
