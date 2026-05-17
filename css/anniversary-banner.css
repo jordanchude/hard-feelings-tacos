@@ -1,0 +1,113 @@
+.anniversary-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #48292d 0%, #5a3034 50%, #48292d 100%);
+  color: #f0eada;
+  font-family: Inter, sans-serif;
+  font-size: 15px;
+  line-height: 1.3;
+  text-decoration: none;
+  text-align: center;
+  position: relative;
+  z-index: 1000;
+  border-bottom: 2px solid #ea494a;
+  transition: filter 0.2s ease;
+  box-sizing: border-box;
+}
+
+.anniversary-banner:hover {
+  filter: brightness(1.12);
+}
+
+.anniversary-banner:focus-visible {
+  outline: 2px solid #f4b53f;
+  outline-offset: -4px;
+}
+
+.ab-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  background: #ea494a;
+  color: #f0eada;
+  font-family: Bungee, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.6px;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+}
+
+.ab-message {
+  font-weight: 500;
+  color: #f0eada;
+}
+
+.ab-message strong {
+  color: #f4b53f;
+  font-weight: 600;
+}
+
+.ab-divider {
+  opacity: 0.35;
+  padding: 0 2px;
+}
+
+.ab-countdown {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  background: rgba(244, 181, 63, 0.14);
+  border: 1px solid #f4b53f;
+  color: #f4b53f;
+  font-family: Bungee, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.6px;
+  border-radius: 999px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.ab-countdown[data-state="today"] {
+  background: #f4b53f;
+  color: #48292d;
+  border-color: #f4b53f;
+  animation: ab-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes ab-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+/*
+  Below 900px the badge + message + countdown stop fitting on one row
+  without an ugly mid-line wrap, so we stack them.
+*/
+@media (max-width: 899px) {
+  .anniversary-banner {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  .ab-divider { display: none; }
+  .ab-badge { font-size: 13px; padding: 3px 11px; }
+  .ab-countdown { font-size: 13px; padding: 3px 11px; }
+}
+
+/* Tighten further on phones. */
+@media (max-width: 479px) {
+  .anniversary-banner {
+    padding: 8px 14px;
+    font-size: 13px;
+    gap: 6px;
+  }
+  .ab-badge { font-size: 12px; padding: 3px 10px; letter-spacing: 0.5px; }
+  .ab-countdown { font-size: 12px; padding: 3px 10px; letter-spacing: 0.5px; }
+}
