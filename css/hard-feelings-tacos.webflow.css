@@ -3586,6 +3586,7 @@
   gap: 30px;
   margin-top: 40px;
   align-items: center;
+  width: 100%;
 }
 
 .upcoming-popups-container .event-item {
