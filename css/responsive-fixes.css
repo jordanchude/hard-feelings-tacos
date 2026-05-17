@@ -1,11 +1,8 @@
 /*
-  Responsive fixes for the hero layout between 768px and 1499px.
-
-  The default Webflow layout puts hero text (50% width) next to a
-  fixed-694px slider, which only fits viewports ~1500px+. Below 768px
-  the layout already stacks. This fills the wide gap in between.
+  Tablet hero layout (768-991px). At these widths the fixed-694px slider
+  can't fit next to a 50% hero text column, so we stack them.
 */
-@media screen and (min-width: 768px) and (max-width: 1499px) {
+@media screen and (min-width: 768px) and (max-width: 991px) {
   .restaurant-herocontainer {
     margin-top: 24px;
     padding-left: 24px;
@@ -68,6 +65,25 @@
 }
 
 /*
+  Desktop hero layout (992-1499px). Keep side-by-side, but make the
+  slider fluid instead of fixed-694px so it shrinks to fit the column
+  without colliding with the hero text on common laptop widths.
+*/
+@media screen and (min-width: 992px) and (max-width: 1499px) {
+  .hero-slider-container {
+    width: calc(50% - 24px);
+    max-width: 694px;
+    height: auto;
+    aspect-ratio: 694 / 860;
+    flex-shrink: 1;
+  }
+
+  .restaurant-hero-container-inner {
+    gap: 24px;
+  }
+}
+
+/*
   Navbar fix for tablet widths (768-991px). The default `.nav-logo` has
   `margin-left: -50px` and `.nav-container` has no `justify-content`, which
   pushes the logo off-screen and collides the hamburger with the logo.
@@ -111,8 +127,8 @@
 }
 
 /*
-  Prevent the document from ever showing a horizontal scrollbar on
-  narrow viewports — any sub-pixel overflow gets clipped instead.
+  Prevent the document from ever showing a horizontal scrollbar from
+  sub-pixel rounding on narrower viewports.
 */
 @media screen and (max-width: 1499px) {
   html, body {
