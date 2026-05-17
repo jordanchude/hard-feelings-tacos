@@ -62,6 +62,27 @@
     });
   }
 
+  let cachedPopups = [];
+  let lastUpcomingKey = null;
+
+  function partitionAndRender() {
+    const upcomingEl = document.getElementById('upcoming-events');
+    const pastEl = document.getElementById('past-events');
+    if (!upcomingEl || !pastEl) return;
+    const now = Date.now();
+    const upcoming = cachedPopups
+      .filter((p) => new Date(p.ends_at || p.starts_at).getTime() >= now)
+      .sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at));
+    const past = cachedPopups
+      .filter((p) => new Date(p.ends_at || p.starts_at).getTime() < now)
+      .sort((a, b) => new Date(b.starts_at) - new Date(a.starts_at));
+    const upcomingKey = upcoming.map((p) => p.id).join(',');
+    if (upcomingKey === lastUpcomingKey) return;
+    lastUpcomingKey = upcomingKey;
+    renderList(upcomingEl, upcoming);
+    renderList(pastEl, past);
+  }
+
   async function loadPopups() {
     const upcomingEl = document.getElementById('upcoming-events');
     const pastEl = document.getElementById('past-events');
@@ -79,18 +100,14 @@
       return;
     }
 
-    const now = Date.now();
-    const popups = data || [];
-    const upcoming = popups
-      .filter((p) => new Date(p.ends_at || p.starts_at).getTime() >= now)
-      .sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at));
-    const past = popups
-      .filter((p) => new Date(p.ends_at || p.starts_at).getTime() < now)
-      .sort((a, b) => new Date(b.starts_at) - new Date(a.starts_at));
-
-    renderList(upcomingEl, upcoming);
-    renderList(pastEl, past);
+    cachedPopups = data || [];
+    lastUpcomingKey = null;
+    partitionAndRender();
   }
+
+  // Re-partition every minute so pop-ups roll over from "Upcoming" to
+  // "Past" without a page refresh once their end (or start) time passes.
+  setInterval(partitionAndRender, 60 * 1000);
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', loadPopups);
