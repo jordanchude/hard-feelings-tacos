@@ -109,6 +109,8 @@
     }
 
     .back-link { display: inline-block; margin-top: 24px; color: var(--muted); font-size: 14px; }
+    .link-row { margin: 14px 0 0; font-size: 14px; }
+    .link-row a { color: var(--red); }
   </style>
 </head>
 <body>
@@ -126,7 +128,7 @@
 
     <!-- LOGIN VIEW -->
     <div id="login-view">
-      <div class="card">
+      <div class="card" id="signin-card">
         <h2>Sign in</h2>
         <form id="login-form">
           <label for="login-email">Email</label>
@@ -137,6 +139,36 @@
             <button type="submit" class="btn btn-primary">Sign in</button>
           </div>
           <div id="login-error" class="error-message"></div>
+        </form>
+        <p class="link-row"><a href="#" id="show-forgot-link">Forgot password?</a></p>
+      </div>
+      <div class="card" id="forgot-card" style="display: none;">
+        <h2>Reset password</h2>
+        <form id="forgot-form">
+          <label for="forgot-email">Email</label>
+          <input type="email" id="forgot-email" name="email" autocomplete="email" required>
+          <div class="field-hint">We'll send a password reset link to this address.</div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Send reset link</button>
+            <button type="button" id="cancel-forgot-btn" class="btn btn-secondary">Cancel</button>
+          </div>
+          <div id="forgot-error" class="error-message"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- RECOVERY VIEW (after clicking password reset email) -->
+    <div id="recovery-view" style="display: none;">
+      <div class="card">
+        <h2>Set a new password</h2>
+        <form id="recovery-form">
+          <label for="recovery-password">New password</label>
+          <input type="password" id="recovery-password" name="password" autocomplete="new-password" minlength="8" required>
+          <div class="field-hint">At least 8 characters.</div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save new password</button>
+          </div>
+          <div id="recovery-error" class="error-message"></div>
         </form>
       </div>
     </div>
@@ -191,6 +223,18 @@
           <div class="field-hint">Shown on the About Us page. Leave a blank line between paragraphs.</div>
           <div class="form-actions">
             <button type="submit" id="bio-submit-btn" class="btn btn-primary">Save bio</button>
+          </div>
+        </form>
+      </div>
+
+      <h2>Change password</h2>
+      <div class="card">
+        <form id="change-password-form">
+          <label for="new-password">New password</label>
+          <input type="password" id="new-password" name="password" autocomplete="new-password" minlength="8" required>
+          <div class="field-hint">At least 8 characters.</div>
+          <div class="form-actions">
+            <button type="submit" id="change-password-btn" class="btn btn-primary">Update password</button>
           </div>
         </form>
       </div>

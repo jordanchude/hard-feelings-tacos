@@ -6,10 +6,23 @@
 
   const loginView = document.getElementById('login-view');
   const dashboardView = document.getElementById('dashboard-view');
+  const recoveryView = document.getElementById('recovery-view');
+  const signinCard = document.getElementById('signin-card');
+  const forgotCard = document.getElementById('forgot-card');
   const loginForm = document.getElementById('login-form');
   const loginError = document.getElementById('login-error');
+  const forgotForm = document.getElementById('forgot-form');
+  const forgotError = document.getElementById('forgot-error');
+  const showForgotLink = document.getElementById('show-forgot-link');
+  const cancelForgotBtn = document.getElementById('cancel-forgot-btn');
+  const recoveryForm = document.getElementById('recovery-form');
+  const recoveryError = document.getElementById('recovery-error');
+  const changePasswordForm = document.getElementById('change-password-form');
+  const changePasswordBtn = document.getElementById('change-password-btn');
   const logoutBtn = document.getElementById('logout-btn');
   const userEmailEl = document.getElementById('user-email');
+
+  let isRecovering = false;
 
   const popupForm = document.getElementById('popup-form');
   const formTitle = document.getElementById('form-title');
@@ -211,13 +224,81 @@
     showAuthedView();
   });
 
+  showForgotLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    signinCard.style.display = 'none';
+    forgotCard.style.display = 'block';
+    forgotError.style.display = 'none';
+    forgotForm.reset();
+    forgotForm.email.value = loginForm.email.value;
+  });
+
+  cancelForgotBtn.addEventListener('click', () => {
+    forgotCard.style.display = 'none';
+    signinCard.style.display = 'block';
+  });
+
+  forgotForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    forgotError.style.display = 'none';
+    const email = forgotForm.email.value.trim();
+    if (!email) return;
+    const submitBtn = forgotForm.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+    const { error } = await client.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/admin/'
+    });
+    submitBtn.disabled = false;
+    if (error) {
+      forgotError.textContent = error.message;
+      forgotError.style.display = 'block';
+      return;
+    }
+    showFlash('Reset link sent. Check your email.');
+    cancelForgotBtn.click();
+  });
+
+  recoveryForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    recoveryError.style.display = 'none';
+    const password = recoveryForm.password.value;
+    const submitBtn = recoveryForm.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+    const { error } = await client.auth.updateUser({ password });
+    submitBtn.disabled = false;
+    if (error) {
+      recoveryError.textContent = error.message;
+      recoveryError.style.display = 'block';
+      return;
+    }
+    isRecovering = false;
+    recoveryForm.reset();
+    showFlash('Password updated. You are now signed in.');
+    history.replaceState(null, '', window.location.pathname);
+    showAuthedView();
+  });
+
+  changePasswordForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const password = changePasswordForm.password.value;
+    if (password.length < 8) { showFlash('Password must be at least 8 characters.', true); return; }
+    changePasswordBtn.disabled = true;
+    const { error } = await client.auth.updateUser({ password });
+    changePasswordBtn.disabled = false;
+    if (error) { showFlash('Could not update password: ' + error.message, true); return; }
+    changePasswordForm.reset();
+    showFlash('Password updated.');
+  });
+
   logoutBtn.addEventListener('click', async () => {
     await client.auth.signOut();
     showLoginView();
   });
 
   function showAuthedView() {
+    if (isRecovering) return;
     loginView.style.display = 'none';
+    recoveryView.style.display = 'none';
     dashboardView.style.display = 'block';
     client.auth.getUser().then(({ data }) => {
       if (data && data.user) userEmailEl.textContent = data.user.email || '';
@@ -228,20 +309,38 @@
 
   function showLoginView() {
     dashboardView.style.display = 'none';
+    recoveryView.style.display = 'none';
     loginView.style.display = 'block';
+    signinCard.style.display = 'block';
+    forgotCard.style.display = 'none';
     loginForm.reset();
     resetForm();
   }
 
+  function showRecoveryView() {
+    isRecovering = true;
+    loginView.style.display = 'none';
+    dashboardView.style.display = 'none';
+    recoveryView.style.display = 'block';
+  }
+
+  client.auth.onAuthStateChange((event) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      showRecoveryView();
+    } else if (event === 'SIGNED_OUT') {
+      isRecovering = false;
+      showLoginView();
+    } else if (event === 'SIGNED_IN' && !isRecovering) {
+      showAuthedView();
+    }
+  });
+
   client.auth.getSession().then(({ data }) => {
+    if (isRecovering) return;
     if (data && data.session) showAuthedView();
     else showLoginView();
   }).catch((err) => {
     console.error('Auth check failed', err);
     showLoginView();
-  });
-
-  client.auth.onAuthStateChange((event) => {
-    if (event === 'SIGNED_OUT') showLoginView();
   });
 })();
