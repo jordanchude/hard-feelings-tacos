@@ -2,6 +2,14 @@
   const client = window.supabase.createClient(window.HFT_SUPABASE_URL, window.HFT_SUPABASE_KEY);
   const tz = window.HFT_SUPABASE_TZ || 'America/New_York';
 
+  // Calendar day (YYYY-MM-DD) of an instant in the configured timezone.
+  // Comparing these keys keeps a pop-up "upcoming" for the rest of the day it
+  // starts on; it only rolls over to "past" once the next day begins locally.
+  function dayKey(isoOrDate) {
+    const date = isoOrDate instanceof Date ? isoOrDate : new Date(isoOrDate);
+    return date.toLocaleDateString('en-CA', { timeZone: tz });
+  }
+
   function formatTime(isoString) {
     const date = new Date(isoString);
     const hour24 = parseInt(date.toLocaleString('en-US', { hour: 'numeric', hour12: false, timeZone: tz }), 10);
@@ -68,12 +76,12 @@
     const upcomingEl = document.getElementById('upcoming-events');
     const pastEl = document.getElementById('past-events');
     if (!upcomingEl || !pastEl) return;
-    const now = Date.now();
+    const todayKey = dayKey(new Date());
     const upcoming = cachedPopups
-      .filter((p) => new Date(p.ends_at || p.starts_at).getTime() >= now)
+      .filter((p) => dayKey(p.starts_at) >= todayKey)
       .sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at));
     const past = cachedPopups
-      .filter((p) => new Date(p.ends_at || p.starts_at).getTime() < now)
+      .filter((p) => dayKey(p.starts_at) < todayKey)
       .sort((a, b) => new Date(b.starts_at) - new Date(a.starts_at));
     const upcomingKey = upcoming.map((p) => p.id).join(',');
     if (upcomingKey === lastUpcomingKey) return;
@@ -105,7 +113,7 @@
   }
 
   // Re-partition every minute so pop-ups roll over from "Upcoming" to
-  // "Past" without a page refresh once their end (or start) time passes.
+  // "Past" without a page refresh once the day they started on has ended.
   setInterval(partitionAndRender, 60 * 1000);
 
   if (document.readyState === 'loading') {

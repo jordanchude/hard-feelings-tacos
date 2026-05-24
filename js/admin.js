@@ -4,6 +4,14 @@
   });
   const tz = window.HFT_SUPABASE_TZ || 'America/New_York';
 
+  // Calendar day (YYYY-MM-DD) of an instant in the configured timezone. A
+  // pop-up stays "upcoming" for the rest of the day it starts on and only
+  // rolls over to "past" once the next day begins locally.
+  function dayKey(isoOrDate) {
+    const date = isoOrDate instanceof Date ? isoOrDate : new Date(isoOrDate);
+    return date.toLocaleDateString('en-CA', { timeZone: tz });
+  }
+
   const loginView = document.getElementById('login-view');
   const dashboardView = document.getElementById('dashboard-view');
   const recoveryView = document.getElementById('recovery-view');
@@ -146,13 +154,13 @@
   async function loadAdminPopups() {
     const { data, error } = await client.from('popups').select('*');
     if (error) { showFlash('Failed to load pop-ups: ' + error.message, true); return; }
-    const now = Date.now();
+    const todayKey = dayKey(new Date());
     const popups = data || [];
     const upcoming = popups
-      .filter((p) => new Date(p.ends_at || p.starts_at).getTime() >= now)
+      .filter((p) => dayKey(p.starts_at) >= todayKey)
       .sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at));
     const past = popups
-      .filter((p) => new Date(p.ends_at || p.starts_at).getTime() < now)
+      .filter((p) => dayKey(p.starts_at) < todayKey)
       .sort((a, b) => new Date(b.starts_at) - new Date(a.starts_at));
     renderAdminList(upcomingList, upcoming);
     renderAdminList(pastList, past);
