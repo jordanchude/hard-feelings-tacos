@@ -10,10 +10,28 @@
   function createContentController({ client, mount, showFlash }) {
     const sections = new Map();
     let loadPromise;
+    let loaded = false;
+    let loadStatus;
 
     function addText(element, value) {
       element.textContent = value;
       return element;
+    }
+
+    function errorMessage(error) {
+      return error && error.message ? error.message : 'Please try again.';
+    }
+
+    function setControlsDisabled(disabled) {
+      sections.forEach((section) => {
+        section.fields.forEach(({ input }) => { input.disabled = disabled; });
+        section.button.disabled = disabled || section.saving;
+      });
+    }
+
+    function setLoadState(message, isBusy) {
+      mount.setAttribute('aria-busy', String(isBusy));
+      loadStatus.textContent = message;
     }
 
     function render() {
@@ -33,7 +51,7 @@
         pageLink.href = entries[0].viewUrl;
         pageLink.target = '_blank';
         pageLink.rel = 'noopener noreferrer';
-        addText(pageLink, `View ${page === 'Homepage' ? 'homepage' : page === 'About' ? 'About page' : 'site'}`);
+        addText(pageLink, page === 'About' ? 'View About page' : 'View homepage');
         pageHeading.append(' ', pageLink);
         pageGroup.append(pageHeading);
 
@@ -76,6 +94,7 @@
             input.setAttribute('aria-describedby', helpId);
             input.maxLength = entry.mode === 'paragraphs' ? 5000 : 160;
             input.setAttribute('maxlength', input.maxLength);
+            input.disabled = true;
             if (input.tagName === 'INPUT') input.type = 'text';
             else input.rows = 5;
             const help = document.createElement('div');
@@ -91,16 +110,22 @@
           const saveButton = document.createElement('button');
           saveButton.type = 'button';
           saveButton.className = 'btn btn-primary';
+          saveButton.setAttribute('data-section-id', id);
+          saveButton.disabled = true;
           addText(saveButton, `Save ${titleCase(sectionName)}`);
-          saveButton.addEventListener('click', () => saveSection(id));
+          saveButton.addEventListener('click', () => { void saveSection(id); });
           actions.append(saveButton);
           card.append(actions);
           pageGroup.append(card);
-          sections.set(id, { fields, error });
+          sections.set(id, { fields, error, button: saveButton, saving: false });
         });
         cards.push(pageGroup);
       });
-      mount.replaceChildren(...cards);
+      loadStatus = document.createElement('p');
+      loadStatus.className = 'field-hint';
+      loadStatus.setAttribute('role', 'status');
+      setLoadState('Content will load after you sign in.', false);
+      mount.replaceChildren(loadStatus, ...cards);
     }
 
     function showSectionError(sectionId, message) {
@@ -111,29 +136,58 @@
     }
 
     async function load() {
+      if (loaded) return;
       if (loadPromise) return loadPromise;
+      setControlsDisabled(true);
+      setLoadState('Loading site content…', true);
       loadPromise = (async () => {
-        const keys = global.HFT_CONTENT_REGISTRY.map(({ key }) => key);
-        const { data, error } = await client.from('site_content').select('key, body').in('key', keys);
-        if (error) return showFlash('Failed to load site content: ' + error.message, true);
-        const values = new Map((data || []).map(({ key, body }) => [key, body]));
-        sections.forEach(({ fields }) => fields.forEach(({ key, input }) => { input.value = values.get(key) || ''; }));
+        try {
+          const keys = global.HFT_CONTENT_REGISTRY.map(({ key }) => key);
+          const { data, error } = await client.from('site_content').select('key, body').in('key', keys);
+          if (error) {
+            showFlash('Failed to load site content: ' + errorMessage(error), true);
+            setLoadState('Site content could not be loaded. Try signing in again.', false);
+            return;
+          }
+          const values = new Map((data || []).map(({ key, body }) => [key, body]));
+          sections.forEach(({ fields }) => fields.forEach(({ key, input }) => { input.value = values.get(key) || ''; }));
+          loaded = true;
+          setControlsDisabled(false);
+          setLoadState('Site content ready to edit.', false);
+        } catch (error) {
+          showFlash('Failed to load site content: ' + errorMessage(error), true);
+          setLoadState('Site content could not be loaded. Try signing in again.', false);
+        } finally {
+          if (!loaded) loadPromise = undefined;
+        }
       })();
       return loadPromise;
     }
 
     async function saveSection(sectionId) {
       const section = sections.get(sectionId);
-      if (!section) return;
+      if (!section || !loaded || section.saving) return;
       const rows = section.fields.map(({ key, input }) => ({ key, body: input.value.trim() }));
       if (rows.some(({ body }) => !body)) {
         showSectionError(sectionId, 'All fields need text before saving.');
         return;
       }
       section.error.style.display = 'none';
-      const { error } = await client.from('site_content').upsert(rows, { onConflict: 'key' });
-      if (error) return showFlash('Save failed: ' + error.message, true);
-      showFlash('Content saved.');
+      section.saving = true;
+      section.button.disabled = true;
+      try {
+        const { error } = await client.from('site_content').upsert(rows, { onConflict: 'key' });
+        if (error) {
+          showFlash('Save failed: ' + errorMessage(error), true);
+          return;
+        }
+        showFlash('Content saved.');
+      } catch (error) {
+        showFlash('Save failed: ' + errorMessage(error), true);
+      } finally {
+        section.saving = false;
+        section.button.disabled = false;
+      }
     }
 
     render();
