@@ -78,6 +78,21 @@ test('paragraph rendering treats markup as text and creates only controlled brea
   assert.equal(el.children.filter((node) => node.tagName === 'BR').length, 2);
 });
 
+test('placeholder and value bindings update their attributes without replacing fallback text', () => {
+  const api = loadSiteContent(fakeDocument());
+  const placeholder = fakeElement('Name field fallback');
+  const value = fakeElement('Send request fallback');
+  value.value = 'Send Pop-up Request';
+
+  assert.equal(api.renderValue(placeholder, ' Your name ', 'placeholder'), true);
+  assert.equal(placeholder.getAttribute('placeholder'), 'Your name');
+  assert.equal(placeholder.textContent, 'Name field fallback');
+
+  assert.equal(api.renderValue(value, ' Send inquiry ', 'value'), true);
+  assert.equal(value.value, 'Send inquiry');
+  assert.equal(value.textContent, 'Send request fallback');
+});
+
 test('blank values preserve fallback content', () => {
   const doc = fakeDocument({ home_hero_heading: fakeElement('fallback heading') });
   const api = loadSiteContent(doc, { home_hero_heading: { mode: 'text' } });
@@ -130,6 +145,40 @@ test('public loader requests and renders only registered keys on the page', asyn
   assert.equal(doc.targets[1].textContent, 'must remain');
 });
 
+test('public loader requests exactly the registered keys bound by its page', async () => {
+  const heading = fakeElement('Fallback heading');
+  const prompt = fakeElement('Fallback prompt');
+  const ignored = fakeElement('Must remain');
+  const doc = fakeDocument({ home_hero_heading: heading, home_host_name_placeholder: prompt, unknown_key: ignored });
+  const requested = [];
+  const client = {
+    from: () => ({ select: () => ({ in: (column, keys) => {
+      assert.equal(column, 'key');
+      requested.push(...keys);
+      return Promise.resolve({
+        data: [
+          { key: 'home_hero_heading', body: 'Fresh tacos' },
+          { key: 'home_host_name_placeholder', body: 'Your name' },
+          { key: 'shared_footer_tagline', body: 'Not on this page' }
+        ],
+        error: null
+      });
+    } }) })
+  };
+  const api = loadSiteContent(doc, {
+    home_hero_heading: { key: 'home_hero_heading', mode: 'text' },
+    home_host_name_placeholder: { key: 'home_host_name_placeholder', mode: 'placeholder' },
+    shared_footer_tagline: { key: 'shared_footer_tagline', mode: 'text' }
+  }, client);
+
+  await api.loadSiteContent();
+
+  assert.deepEqual([...requested].sort(), ['home_hero_heading', 'home_host_name_placeholder']);
+  assert.equal(doc.targets[0].textContent, 'Fresh tacos');
+  assert.equal(doc.targets[1].getAttribute('placeholder'), 'Your name');
+  assert.equal(doc.targets[2].textContent, 'Must remain');
+});
+
 test('public loader preserves fallback content when the request rejects', async () => {
   const doc = fakeDocument({ home_hero_heading: fakeElement('fallback heading') });
   const client = {
@@ -138,4 +187,41 @@ test('public loader preserves fallback content when the request rejects', async 
   const api = loadSiteContent(doc, { home_hero_heading: { key: 'home_hero_heading', mode: 'text' } }, client);
   await assert.doesNotReject(api.loadSiteContent());
   assert.equal(doc.target.textContent, 'fallback heading');
+});
+
+test('public loader preserves public and metadata fallbacks when Supabase resolves with an error', async () => {
+  const { doc, tags } = metadataDocument();
+  const heading = fakeElement('Fallback heading');
+  heading.dataset = { siteContentKey: 'home_hero_heading' };
+  doc.targets = [heading];
+  doc.querySelectorAll = (selector) => {
+    if (selector === '[data-site-content-key]') return doc.targets;
+    return {
+      'meta[name="description"]': [tags.description],
+      'meta[property="og:title"]': [tags['og:title']],
+      'meta[property="og:description"]': [tags['og:description']],
+      'meta[name="twitter:title"], meta[property="twitter:title"]': [tags['twitter:title']],
+      'meta[name="twitter:description"], meta[property="twitter:description"]': [tags['twitter:description']]
+    }[selector] || [];
+  };
+  doc.title = 'Static title';
+  tags.description.setAttribute('content', 'Static description');
+  tags['og:title'].setAttribute('content', 'Static title');
+  tags['og:description'].setAttribute('content', 'Static description');
+  tags['twitter:title'].setAttribute('content', 'Static title');
+  tags['twitter:description'].setAttribute('content', 'Static description');
+  const client = {
+    from: () => ({ select: () => ({ in: () => Promise.resolve({ data: null, error: { message: 'RLS denied' } }) }) })
+  };
+  const api = loadSiteContent(doc, { home_hero_heading: { key: 'home_hero_heading', mode: 'text', metadataRole: 'title' } }, client);
+
+  await assert.doesNotReject(api.loadSiteContent());
+
+  assert.equal(heading.textContent, 'Fallback heading');
+  assert.equal(doc.title, 'Static title');
+  assert.equal(tags.description.getAttribute('content'), 'Static description');
+  assert.equal(tags['og:title'].getAttribute('content'), 'Static title');
+  assert.equal(tags['og:description'].getAttribute('content'), 'Static description');
+  assert.equal(tags['twitter:title'].getAttribute('content'), 'Static title');
+  assert.equal(tags['twitter:description'].getAttribute('content'), 'Static description');
 });

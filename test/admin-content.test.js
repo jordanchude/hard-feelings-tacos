@@ -70,6 +70,13 @@ function buttonFor(mount, sectionId) {
   return descendants(mount).find((node) => node.getAttribute && node.getAttribute('data-section-id') === sectionId);
 }
 
+test('content controller remains isolated from pop-up event loading', () => {
+  const controllerSource = fs.readFileSync('js/admin-content.js', 'utf8');
+  const adminSource = fs.readFileSync('js/admin.js', 'utf8');
+  assert.equal(controllerSource.includes("from('popups')"), false);
+  assert.equal(adminSource.includes('loadAdminPopups()'), true);
+});
+
 test('renders all 66 fields in grouped accessible cards with the fixed page links', () => {
   const { mount, registry } = setupController();
   const controls = descendants(mount).filter((node) => node.tagName === 'INPUT' || node.tagName === 'TEXTAREA');
