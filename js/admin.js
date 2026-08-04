@@ -32,10 +32,6 @@
   const pastList = document.getElementById('admin-past-list');
   const flash = document.getElementById('flash');
 
-  const bioForm = document.getElementById('bio-form');
-  const bioBody = document.getElementById('bio-body');
-  const bioSubmitBtn = document.getElementById('bio-submit-btn');
-
   let editingId = null;
 
   function toLocalDatetimeValue(iso) {
@@ -68,6 +64,12 @@
     flash.style.display = 'block';
     setTimeout(() => { flash.style.display = 'none'; }, 4000);
   }
+
+  const contentController = window.HFT_ADMIN_CONTENT.createContentController({
+    client,
+    mount: document.getElementById('site-content-manager'),
+    showFlash
+  });
 
   function applySoldOutLock() {
     const locked = popupForm.is_sold_out.checked;
@@ -204,23 +206,6 @@
   cancelEditBtn.addEventListener('click', resetForm);
   popupForm.is_sold_out.addEventListener('change', applySoldOutLock);
 
-  async function loadBio() {
-    const { data, error } = await client.from('site_content').select('body').eq('key', 'about_bio').maybeSingle();
-    if (error) { showFlash('Failed to load bio: ' + error.message, true); return; }
-    bioBody.value = (data && data.body) || '';
-  }
-
-  bioForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const body = bioBody.value.trim();
-    if (!body) { showFlash('Bio cannot be empty.', true); return; }
-    bioSubmitBtn.disabled = true;
-    const { error } = await client.from('site_content').update({ body }).eq('key', 'about_bio');
-    bioSubmitBtn.disabled = false;
-    if (error) { showFlash('Save failed: ' + error.message, true); return; }
-    showFlash('Bio updated.');
-  });
-
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     loginError.style.display = 'none';
@@ -323,7 +308,7 @@
       if (data && data.user) userEmailEl.textContent = data.user.email || '';
     });
     loadAdminPopups();
-    loadBio();
+    contentController.load();
   }
 
   function showLoginView() {
