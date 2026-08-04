@@ -120,6 +120,51 @@ test('load hydrates all registry keys once and enables editing only after succes
   assert.equal(calls.length, 1);
 });
 
+test('reset disables and clears content, then the next authenticated session loads fresh values once', async () => {
+  const responses = [
+    Promise.resolve({ data: [{ key: 'home_hero_heading', body: 'First session' }], error: null }),
+    Promise.resolve({ data: [{ key: 'home_hero_heading', body: 'Second session' }], error: null })
+  ];
+  const { controller, mount, calls } = setupController({ response: () => responses.shift() });
+  const hero = controlFor(mount, 'home_hero_heading');
+
+  await controller.load();
+  assert.equal(hero.value, 'First session');
+  await controller.load();
+  assert.equal(calls.length, 1, 'successful loads remain cached within one session');
+
+  controller.reset();
+  assert.equal(hero.value, '');
+  assert.equal(hero.disabled, true);
+  assert.equal(mount.getAttribute('aria-busy'), 'false');
+
+  await Promise.all([controller.load(), controller.load()]);
+  assert.equal(hero.value, 'Second session');
+  assert.equal(hero.disabled, false);
+  assert.equal(calls.length, 2, 'a reset permits exactly one fresh load for the next session');
+});
+
+test('reset invalidates an in-flight load so signed-out content cannot re-enable the editor', async () => {
+  const request = deferred();
+  const { controller, mount } = setupController({ response: request.promise });
+  const hero = controlFor(mount, 'home_hero_heading');
+  const loading = controller.load();
+
+  controller.reset();
+  request.resolve({ data: [{ key: 'home_hero_heading', body: 'Stale private value' }], error: null });
+  await loading;
+
+  assert.equal(hero.value, '');
+  assert.equal(hero.disabled, true);
+  assert.equal(mount.getAttribute('aria-busy'), 'false');
+});
+
+test('admin login lifecycle resets site content whenever the signed-in view is left', () => {
+  const adminSource = fs.readFileSync('js/admin.js', 'utf8');
+  const showLoginView = /function showLoginView\(\) \{([\s\S]*?)\n  \}/.exec(adminSource)?.[1] || '';
+  assert.match(showLoginView, /contentController\.reset\(\)/);
+});
+
 test('load failures flash, retain disabled controls, and permit a later retry', async () => {
   const responses = [
     Promise.resolve({ data: null, error: { message: 'read denied' } }),

@@ -1,6 +1,6 @@
 # Editable site content design
 
-**Date:** 2026-08-03  
+**Date:** 2026-08-03
 **Status:** Approved design; implementation not started
 
 ## Goal and scope
@@ -142,7 +142,7 @@ Derivation converts paragraph text to a whitespace-normalized plain string and u
 4. An authenticated editor loads the same registry, edits a field, and saves via `site_content.upsert({ key, body }, { onConflict: 'key' })`.
 5. The next public fetch uses the saved content. No cache invalidation system is required because pages fetch on load.
 
-The seed must be executed against the production Supabase project by an authorized operator because this repository has no migration files or database management tool. Before execution, the operator verifies that `site_content.key` is unique/primary and that authenticated users retain insert/update rights in addition to public read. If it is not unique, establish a unique constraint before using `onConflict: 'key'`. Store the seed as an idempotent SQL script or repeatable Supabase SQL-editor transaction supplied with implementation; do not attempt to infer a schema migration from browser code.
+The seed must be executed against the production Supabase project by an authorized operator because this repository has no migration files or database management tool. A standalone read-only preflight artifact must be run and inspected first; it stops before any DML and verifies that `site_content.key` is unique/primary and that authenticated users retain insert/update rights in addition to public read. Only after every prerequisite is confirmed may the operator run the seed as a separate second step. If the key is not unique, establish a unique constraint outside these artifacts before using `onConflict: 'key'`. Store the seed as an idempotent SQL script or repeatable Supabase SQL-editor transaction supplied with implementation; do not attempt to infer a schema migration from browser code or create/loosen grants and RLS automatically.
 
 ## Accessibility and security
 

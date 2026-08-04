@@ -312,6 +312,7 @@
   }
 
   function showLoginView() {
+    contentController.reset();
     dashboardView.style.display = 'none';
     recoveryView.style.display = 'none';
     loginView.style.display = 'block';
@@ -323,6 +324,7 @@
 
   function showRecoveryView() {
     isRecovering = true;
+    contentController.reset();
     loginView.style.display = 'none';
     dashboardView.style.display = 'none';
     recoveryView.style.display = 'block';

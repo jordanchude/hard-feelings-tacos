@@ -93,6 +93,8 @@ function scan(file, html, registry) {
     const decorativeDivider = (attrs.get('class') || '').split(/\s+/).includes('ab-divider');
     const bound = Boolean(parent?.bound || key);
     if (key) {
+      const overridingLabel = attrs.get('aria-label') || [...stack].reverse().find((context) => context.ariaLabel)?.ariaLabel;
+      if (overridingLabel) errors.push(`${file}: aria-label overrides editable copy for ${key}`);
       if (!entry) errors.push(`${file}: unregistered binding ${key}`);
       else {
         found.set(key, (found.get(key) || 0) + 1);
@@ -107,7 +109,7 @@ function scan(file, html, registry) {
       const fieldValue = decode(attrs.get(field) || '');
       if (fieldValue && !key && !ignored && !systemAllowlist.has(fieldValue)) errors.push(`${file}: unbound ${field} ${JSON.stringify(fieldValue)}`);
     }
-    if (!voidTags.has(name) && !value.endsWith('/>')) stack.push({ bound, ignored, decorativeDivider });
+    if (!voidTags.has(name) && !value.endsWith('/>')) stack.push({ bound, ignored, decorativeDivider, ariaLabel: attrs.get('aria-label') });
   }
   return { errors, found, fallbacks: fallbackValues(html, registry) };
 }

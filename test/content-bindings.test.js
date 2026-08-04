@@ -73,3 +73,16 @@ test('binding verifier catches removal of one required duplicate target', () => 
     assert.match(result.stderr, /index\.html.*home_values_body/);
   });
 });
+
+test('binding verifier rejects an authored aria-label that overrides editable banner copy', () => {
+  withCopiedSite((root) => {
+    const file = path.join(root, 'index.html');
+    fs.writeFileSync(file, fs.readFileSync(file, 'utf8').replace(
+      'id="anniversary-banner" class="anniversary-banner"',
+      'id="anniversary-banner" class="anniversary-banner" aria-label="Stale fixed promotion"'
+    ));
+  }, (result) => {
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /index\.html.*aria-label.*shared_banner_badge|index\.html.*aria-label.*editable/i);
+  });
+});

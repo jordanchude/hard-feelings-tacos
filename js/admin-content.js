@@ -12,6 +12,7 @@
     let loadPromise;
     let loaded = false;
     let loadStatus;
+    let generation = 0;
 
     function addText(element, value) {
       element.textContent = value;
@@ -138,12 +139,14 @@
     async function load() {
       if (loaded) return;
       if (loadPromise) return loadPromise;
+      const loadGeneration = generation;
       setControlsDisabled(true);
       setLoadState('Loading site content…', true);
-      loadPromise = (async () => {
+      const currentLoad = (async () => {
         try {
           const keys = global.HFT_CONTENT_REGISTRY.map(({ key }) => key);
           const { data, error } = await client.from('site_content').select('key, body').in('key', keys);
+          if (loadGeneration !== generation) return;
           if (error) {
             showFlash('Failed to load site content: ' + errorMessage(error), true);
             setLoadState('Site content could not be loaded. Try signing in again.', false);
@@ -155,18 +158,35 @@
           setControlsDisabled(false);
           setLoadState('Site content ready to edit.', false);
         } catch (error) {
+          if (loadGeneration !== generation) return;
           showFlash('Failed to load site content: ' + errorMessage(error), true);
           setLoadState('Site content could not be loaded. Try signing in again.', false);
         } finally {
-          if (!loaded) loadPromise = undefined;
+          if (loadGeneration === generation && !loaded) loadPromise = undefined;
         }
       })();
+      loadPromise = currentLoad;
       return loadPromise;
+    }
+
+    function reset() {
+      generation += 1;
+      loaded = false;
+      loadPromise = undefined;
+      sections.forEach((section) => {
+        section.saving = false;
+        section.error.textContent = '';
+        section.error.style.display = 'none';
+        section.fields.forEach(({ input }) => { input.value = ''; });
+      });
+      setControlsDisabled(true);
+      setLoadState('Content will load after you sign in.', false);
     }
 
     async function saveSection(sectionId) {
       const section = sections.get(sectionId);
       if (!section || !loaded || section.saving) return;
+      const saveGeneration = generation;
       const rows = section.fields.map(({ key, input }) => ({ key, body: input.value.trim() }));
       if (rows.some(({ body }) => !body)) {
         showSectionError(sectionId, 'All fields need text before saving.');
@@ -177,21 +197,25 @@
       section.button.disabled = true;
       try {
         const { error } = await client.from('site_content').upsert(rows, { onConflict: 'key' });
+        if (saveGeneration !== generation) return;
         if (error) {
           showFlash('Save failed: ' + errorMessage(error), true);
           return;
         }
         showFlash('Content saved.');
       } catch (error) {
+        if (saveGeneration !== generation) return;
         showFlash('Save failed: ' + errorMessage(error), true);
       } finally {
-        section.saving = false;
-        section.button.disabled = false;
+        if (saveGeneration === generation) {
+          section.saving = false;
+          section.button.disabled = false;
+        }
       }
     }
 
     render();
-    return { load, saveSection };
+    return { load, reset, saveSection };
   }
 
   global.HFT_ADMIN_CONTENT = { createContentController };

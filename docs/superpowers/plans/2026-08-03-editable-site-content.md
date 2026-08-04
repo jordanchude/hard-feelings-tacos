@@ -36,6 +36,7 @@
 | `about-us.html` | Modify | Add registry keys to every editable About/shared target while retaining the exact text fallback; load registry and public scripts. |
 | `admin/index.html` | Modify | Add accessible Site content mount point, grouped-card styles, and the registry/content scripts without changing Pop-ups UI. |
 | `scripts/verify-content-bindings.js` | Create | Parse the two public HTML files and fail on registry/binding/allowlist coverage drift. |
+| `supabase/check-site-content-access.sql` | Create | Run read-only prerequisite checks with explicit operator stop criteria before any seed execution. |
 | `supabase/seed-site-content.sql` | Create | Idempotently seed missing or blank rows from static fallback values without overwriting nonempty production content. |
 | `test/content-registry.test.js` | Create | Assert registry completeness, valid modes, grouping, and source-target metadata. |
 | `test/site-content.test.js` | Create | Assert safe rendering, fallback preservation, metadata derivation, and public loader behavior with fake DOM/Supabase objects. |
@@ -77,7 +78,7 @@ test('registry defines each key once and only safe rendering modes', () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `node --test test/content-registry.test.js`  
+Run: `node --test test/content-registry.test.js`
 Expected: FAIL because the registry and browser-script test helper do not exist.
 
 - [ ] **Step 3: Add the minimal Node test setup and helper**
@@ -136,7 +137,7 @@ Use one key with a comma-separated selector for duplicated banner/navigation/foo
 
 - [ ] **Step 5: Run the focused test**
 
-Run: `npm test -- --test-name-pattern="registry defines"`  
+Run: `npm test -- --test-name-pattern="registry defines"`
 Expected: PASS; registry has unique keys, valid modes, and complete admin metadata.
 
 - [ ] **Step 6: Commit**
@@ -177,7 +178,7 @@ test('blank values preserve fallback content', () => {
 
 - [ ] **Step 2: Run the focused test to verify it fails**
 
-Run: `node --test test/site-content.test.js`  
+Run: `node --test test/site-content.test.js`
 Expected: FAIL because the renderer test API is absent.
 
 - [ ] **Step 3: Implement safe text/attribute rendering**
@@ -218,7 +219,7 @@ Normalize description whitespace. Update `<title>`, `meta[name="description"]`, 
 
 - [ ] **Step 5: Run tests**
 
-Run: `npm test -- --test-name-pattern="rendering|fallback|metadata"`  
+Run: `npm test -- --test-name-pattern="rendering|fallback|metadata"`
 Expected: PASS; markup is literal text, error/blank paths keep fallback, and metadata mirrors agree.
 
 - [ ] **Step 6: Commit**
@@ -251,7 +252,7 @@ test('public bindings cover registered content and only allowlisted runtime stri
 
 - [ ] **Step 2: Run it before markup changes**
 
-Run: `node --test test/content-bindings.test.js`  
+Run: `node --test test/content-bindings.test.js`
 Expected: FAIL with unbound registry keys.
 
 - [ ] **Step 3: Add complete fallback-preserving bindings**
@@ -281,7 +282,7 @@ Load the registry in a VM and scan the two HTML files. Exit 1, naming file/key/v
 
 - [ ] **Step 5: Run coverage and unit checks**
 
-Run: `node scripts/verify-content-bindings.js && npm test`  
+Run: `node scripts/verify-content-bindings.js && npm test`
 Expected: PASS; all public authored copy is bound once or explicitly classified as runtime/system text.
 
 - [ ] **Step 6: Commit**
@@ -325,7 +326,7 @@ test('saveSection rejects blanks and upserts only its section keys', async () =>
 
 - [ ] **Step 2: Run it to verify it fails**
 
-Run: `node --test test/admin-content.test.js`  
+Run: `node --test test/admin-content.test.js`
 Expected: FAIL because the controller does not exist.
 
 - [ ] **Step 3: Add mount point and accessible markup/styles**
@@ -359,7 +360,7 @@ In `admin.js`, initialize one controller and call `contentController.load()` ins
 
 - [ ] **Step 5: Run targeted tests**
 
-Run: `npm test -- --test-name-pattern="saveSection|grouped|popups"`  
+Run: `npm test -- --test-name-pattern="saveSection|grouped|popups"`
 Expected: PASS; blank values write nothing, each section writes only its own rows, and no call targets `popups`.
 
 - [ ] **Step 6: Commit**
@@ -372,12 +373,13 @@ git commit -m "feat: add grouped site content admin"
 ### Task 5: Add safe Supabase seed and operator preflight
 
 **Files:**
+- Create: `supabase/check-site-content-access.sql`
 - Create: `supabase/seed-site-content.sql`
 - Create: `test/seed-site-content.test.js`
 
 **Interfaces:**
 - Consumes: exact static fallback values for every Task 1 registry key.
-- Produces: operator-run transaction that inserts missing/blank rows without overwriting nonempty content.
+- Produces: a standalone read-only operator gate followed, only after review, by a separately run transaction that inserts missing/blank rows without overwriting nonempty content.
 - Does not reference `popups`.
 
 - [ ] **Step 1: Write the failing SQL contract test**
@@ -394,13 +396,13 @@ test('seed protects nonempty content and declares every registry key', () => {
 
 - [ ] **Step 2: Run it to verify it fails**
 
-Run: `node --test test/seed-site-content.test.js`  
+Run: `node --test test/seed-site-content.test.js`
 Expected: FAIL because the seed file is absent.
 
-- [ ] **Step 3: Implement preflight and full idempotent seed**
+- [ ] **Step 3: Implement the separate preflight and full idempotent seed**
 
 ```sql
-BEGIN;
+-- supabase/check-site-content-access.sql (run and inspect by itself)
 SELECT c.conname
 FROM pg_constraint c JOIN pg_class t ON t.oid = c.conrelid
 WHERE t.relname = 'site_content' AND c.contype IN ('p', 'u');
@@ -408,7 +410,13 @@ WHERE t.relname = 'site_content' AND c.contype IN ('p', 'u');
 SELECT policyname, roles, cmd, qual, with_check
 FROM pg_policies
 WHERE schemaname = 'public' AND tablename = 'site_content';
+```
 
+Stop after the read-only file. An authorized operator must confirm the unique-key, grant, RLS, and policy semantics stated in that artifact before opening the seed as a separate second step. The preflight must contain no DML or seed transaction and must not create or loosen grants or policies.
+
+```sql
+-- supabase/seed-site-content.sql (second step only)
+BEGIN;
 INSERT INTO public.site_content AS site_content (key, body)
 VALUES ('home_hero_heading', 'b''fast tacos by texans, for texans')
 ON CONFLICT (key) DO UPDATE
@@ -419,17 +427,17 @@ COMMIT;
 
 Use the actual homepage fallback in that example—`b''fast tacos by texans, for texans` with SQL apostrophe escaping—and add one literal row for every registry entry by reading its bound fallback from `index.html` or `about-us.html`. When a shared key occurs on both pages, first assert the normalized fallback strings match and then use that shared value. The seed contract test must compare the SQL keys and bodies to the bound HTML fallbacks, so a missing or invented value fails deterministically.
 
-Put a literal `VALUES` row for every registry key, including `about_bio`. Put an operator instruction before `BEGIN`: execute only after the first query confirms a primary/unique key and the second shows public SELECT plus authenticated INSERT/UPDATE; otherwise stop before the transaction.
+Put a literal `VALUES` row for every registry key, including `about_bio`. Put an operator instruction before `BEGIN` that identifies this as the second step and points to the separate preflight artifact. Do not repeat the inspection queries in the seed file.
 
 - [ ] **Step 4: Run seed contract and full suite**
 
-Run: `npm test`  
+Run: `npm test`
 Expected: PASS; the seed covers all keys, preserves nonempty rows, and does not touch events.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add supabase/seed-site-content.sql test/seed-site-content.test.js
+git add supabase/check-site-content-access.sql supabase/seed-site-content.sql test/seed-site-content.test.js
 git commit -m "chore: add safe site content seed"
 ```
 
@@ -461,12 +469,12 @@ test('content controller is isolated from events', () => {
 
 - [ ] **Step 2: Run suite before corrections**
 
-Run: `npm test`  
+Run: `npm test`
 Expected: FAIL only for omitted page-key filtering or event-isolation behavior.
 
 - [ ] **Step 3: Make the smallest corrections and run deterministic checks**
 
-Run: `npm test && node scripts/verify-content-bindings.js && git diff --check`  
+Run: `npm test && node scripts/verify-content-bindings.js && git diff --check`
 Expected: all commands exit 0.
 
 - [ ] **Step 4: Perform manual browser and Supabase checks**
@@ -477,7 +485,7 @@ Expected: all commands exit 0.
 4. Verify browser title, description, OG, and Twitter tags track resolved Hero/About source values and preserve static values after a fetch failure.
 5. At narrow mobile width, navigate every content field, help string, section save button, and view-page link by keyboard.
 6. Add, edit, and delete a pop-up; verify its current Upcoming/Past behavior and formatted status remain unchanged.
-7. Run the Task 5 preflight queries in the Supabase SQL editor and execute the seed only if both uniqueness/RLS prerequisites pass.
+7. Run `supabase/check-site-content-access.sql` by itself in the Supabase SQL editor, stop and inspect every result, then run `supabase/seed-site-content.sql` separately only if every uniqueness/grant/RLS/policy prerequisite passes.
 
 - [ ] **Step 5: Commit**
 

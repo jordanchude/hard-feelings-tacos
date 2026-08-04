@@ -4,6 +4,7 @@ import test from 'node:test';
 import { loadBrowserScript } from './helpers/load-browser-script.js';
 
 const sqlFile = 'supabase/seed-site-content.sql';
+const preflightFile = 'supabase/check-site-content-access.sql';
 const registry = loadBrowserScript('js/content-registry.js').window.HFT_CONTENT_REGISTRY;
 
 function readNormalized(file) {
@@ -22,6 +23,7 @@ function decodeHtml(value) {
 function normalizeFallback(value) {
   return decodeHtml(value
     .replace(/<br\s*\/?\s*>\s*<br\s*\/?\s*>/gi, '\n\n')
+    .replace(/<br\s*\/?\s*>/gi, ' ')
     .replace(/<[^>]+>/g, '')
     .replace(/\u200d/g, '')
     .replace(/[ \t]+\n/g, '\n'));
@@ -90,6 +92,10 @@ test('seed bodies exactly match the normalized public fallbacks for every regist
   const seeded = seededBodies(sql);
   assert.equal(seeded.size, 66, 'the seed has one row for each fixed registry key');
   assert.deepEqual(seeded, expectedBodies());
+  assert.equal(seeded.get('shared_notice_body'), 'Thaliwala will be Closing on Wed, Feb 22 & Thursday, Feb 23. Thank you for understanding.');
+  assert.equal(seeded.get('home_menu_papas_title'), 'Papas con Huevo (Veg)');
+  assert.equal(seeded.get('home_menu_vegan_title'), 'Man! I Feel Like a Vegan (V)');
+  assert.equal(seeded.get('home_values_heading'), 'our Values');
 });
 
 test('seed transaction only fills blank site content and never touches popups', () => {
@@ -102,8 +108,8 @@ test('seed transaction only fills blank site content and never touches popups', 
   assert.doesNotMatch(sql, /\b(?:from|into|update|table)\s+(?:public\.)?popups\b/i);
 });
 
-test('seed preflight is read-only and makes policy semantics an authorized-operator decision', () => {
-  const sql = readNormalized(sqlFile);
+test('access preflight is a separate read-only stop gate with no seed transaction', () => {
+  const sql = readNormalized(preflightFile);
   assert.match(sql, /pg_constraint/);
   assert.match(sql, /attname\s*=\s*'key'/);
   assert.match(sql, /contype\s+IN\s*\('p',\s*'u'\)/);
@@ -125,5 +131,15 @@ test('seed preflight is read-only and makes policy semantics an authorized-opera
   assert.doesNotMatch(sql, /IS NOT NULL AS effective/i);
   assert.doesNotMatch(sql, /\b(?:create|drop|alter)\s+(?:policy|table)\b/i);
   assert.doesNotMatch(sql, /^\s*GRANT\b/im);
+  assert.doesNotMatch(sql, /\b(?:insert|update|delete)\s+(?:into\s+|from\s+)?public\.site_content\b/i);
+  assert.doesNotMatch(sql, /^\s*(?:BEGIN|COMMIT);/im);
   assert.doesNotMatch(sql, /[ \t]+\n/);
+});
+
+test('seed is explicitly second-step only and contains no same-run preflight inspection', () => {
+  const sql = readNormalized(sqlFile);
+  assert.match(sql, /SECOND STEP/i);
+  assert.match(sql, /check-site-content-access\.sql/);
+  assert.doesNotMatch(sql, /pg_constraint|pg_policies|information_schema\.role_table_grants|relrowsecurity/);
+  assert.doesNotMatch(sql, /inspect.*then|run.*queries.*then.*seed/is);
 });
