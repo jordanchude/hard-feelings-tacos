@@ -70,6 +70,30 @@ function metadataDocument() {
   return { doc, tags };
 }
 
+function staticMetadataFallbackDocument() {
+  const { doc, tags } = metadataDocument();
+  const heading = fakeElement('Fallback heading');
+  heading.dataset = { siteContentKey: 'home_hero_heading' };
+  doc.targets = [heading];
+  doc.querySelectorAll = (selector) => {
+    if (selector === '[data-site-content-key]') return doc.targets;
+    return {
+      'meta[name="description"]': [tags.description],
+      'meta[property="og:title"]': [tags['og:title']],
+      'meta[property="og:description"]': [tags['og:description']],
+      'meta[name="twitter:title"], meta[property="twitter:title"]': [tags['twitter:title']],
+      'meta[name="twitter:description"], meta[property="twitter:description"]': [tags['twitter:description']]
+    }[selector] || [];
+  };
+  doc.title = 'Static title';
+  tags.description.setAttribute('content', 'Static description');
+  tags['og:title'].setAttribute('content', 'Static title');
+  tags['og:description'].setAttribute('content', 'Static description');
+  tags['twitter:title'].setAttribute('content', 'Static title');
+  tags['twitter:description'].setAttribute('content', 'Static description');
+  return { doc, tags, heading };
+}
+
 test('paragraph rendering treats markup as text and creates only controlled breaks', () => {
   const api = loadSiteContent(fakeDocument());
   const el = fakeElement('fallback');
@@ -180,36 +204,33 @@ test('public loader requests exactly the registered keys bound by its page', asy
 });
 
 test('public loader preserves fallback content when the request rejects', async () => {
-  const doc = fakeDocument({ home_hero_heading: fakeElement('fallback heading') });
+  const { doc, tags, heading } = staticMetadataFallbackDocument();
+  const initialMetadata = {
+    title: doc.title,
+    description: tags.description.getAttribute('content'),
+    ogTitle: tags['og:title'].getAttribute('content'),
+    ogDescription: tags['og:description'].getAttribute('content'),
+    twitterTitle: tags['twitter:title'].getAttribute('content'),
+    twitterDescription: tags['twitter:description'].getAttribute('content')
+  };
   const client = {
     from: () => ({ select: () => ({ in: () => Promise.reject(new Error('network unavailable')) }) })
   };
-  const api = loadSiteContent(doc, { home_hero_heading: { key: 'home_hero_heading', mode: 'text' } }, client);
+  const api = loadSiteContent(doc, { home_hero_heading: { key: 'home_hero_heading', mode: 'text', metadataRole: 'title' } }, client);
   await assert.doesNotReject(api.loadSiteContent());
-  assert.equal(doc.target.textContent, 'fallback heading');
+  assert.equal(heading.textContent, 'Fallback heading');
+  assert.deepEqual({
+    title: doc.title,
+    description: tags.description.getAttribute('content'),
+    ogTitle: tags['og:title'].getAttribute('content'),
+    ogDescription: tags['og:description'].getAttribute('content'),
+    twitterTitle: tags['twitter:title'].getAttribute('content'),
+    twitterDescription: tags['twitter:description'].getAttribute('content')
+  }, initialMetadata);
 });
 
 test('public loader preserves public and metadata fallbacks when Supabase resolves with an error', async () => {
-  const { doc, tags } = metadataDocument();
-  const heading = fakeElement('Fallback heading');
-  heading.dataset = { siteContentKey: 'home_hero_heading' };
-  doc.targets = [heading];
-  doc.querySelectorAll = (selector) => {
-    if (selector === '[data-site-content-key]') return doc.targets;
-    return {
-      'meta[name="description"]': [tags.description],
-      'meta[property="og:title"]': [tags['og:title']],
-      'meta[property="og:description"]': [tags['og:description']],
-      'meta[name="twitter:title"], meta[property="twitter:title"]': [tags['twitter:title']],
-      'meta[name="twitter:description"], meta[property="twitter:description"]': [tags['twitter:description']]
-    }[selector] || [];
-  };
-  doc.title = 'Static title';
-  tags.description.setAttribute('content', 'Static description');
-  tags['og:title'].setAttribute('content', 'Static title');
-  tags['og:description'].setAttribute('content', 'Static description');
-  tags['twitter:title'].setAttribute('content', 'Static title');
-  tags['twitter:description'].setAttribute('content', 'Static description');
+  const { doc, tags, heading } = staticMetadataFallbackDocument();
   const client = {
     from: () => ({ select: () => ({ in: () => Promise.resolve({ data: null, error: { message: 'RLS denied' } }) }) })
   };
