@@ -154,6 +154,19 @@
 
     .empty { color: var(--muted); font-style: italic; padding: 8px 0; }
 
+    .content-page-group { margin-top: 20px; }
+    .content-page-group h3 { margin: 0 0 10px; font-size: 18px; color: var(--brown); }
+    .content-page-group h3 a { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: var(--red); }
+    .content-section-card { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
+    .content-section-card h4, .content-section-card .content-location, .content-section-card .error-message, .content-section-card .form-actions { grid-column: 1 / -1; }
+    .content-section-card h4 { margin: 0; font-size: 16px; color: var(--brown); }
+    .content-field { min-width: 0; }
+    .content-location { margin: 4px 0 2px; }
+    .content-section-card textarea { min-height: 130px; }
+    @media (max-width: 640px) {
+      .content-section-card { grid-template-columns: 1fr; }
+    }
+
     .flash {
       position: fixed; top: 20px; right: 20px; padding: 12px 18px;
       border-radius: 6px; color: white; font-size: 14px; z-index: 1000;
@@ -278,17 +291,8 @@
       <h2>Past pop-ups</h2>
       <div id="admin-past-list"></div>
 
-      <h2>About page bio</h2>
-      <div class="card">
-        <form id="bio-form">
-          <label for="bio-body">Bio text</label>
-          <textarea id="bio-body" name="body" rows="12"></textarea>
-          <div class="field-hint">Shown on the About Us page. Leave a blank line between paragraphs.</div>
-          <div class="form-actions">
-            <button type="submit" id="bio-submit-btn" class="btn btn-primary">Save bio</button>
-          </div>
-        </form>
-      </div>
+      <h2 id="site-content-heading">Site content</h2>
+      <section id="site-content-manager" aria-labelledby="site-content-heading"></section>
 
       <h2>Change password</h2>
       <div class="card">
@@ -312,6 +316,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/popups-config.js"></script>
+  <script src="../js/content-registry.js"></script>
+  <script src="../js/admin-content.js"></script>
   <script src="../js/admin.js"></script>
   <script>
     // Show/hide the header user area based on dashboard visibility
