@@ -41,32 +41,31 @@ SELECT required_grants.grantee, required_grants.privilege_type,
 FROM required_grants
 ORDER BY required_grants.grantee, required_grants.privilege_type;
 
--- 4. RLS policies must effectively permit the same operations. Policies for
--- `public` are effective for anon/authenticated. Inspect qual/with_check too.
-WITH required_policies (role_name, command) AS (
+-- 4. Candidate RLS policies. This query deliberately does not decide whether a
+-- predicate permits an operation: an arbitrary qual/with_check expression, the
+-- interaction of permissive policies, and restrictive policies require review.
+WITH requested_access (role_name, command) AS (
   VALUES
     ('anon', 'SELECT'),
     ('authenticated', 'SELECT'),
     ('authenticated', 'INSERT'),
     ('authenticated', 'UPDATE')
 )
-SELECT required_policies.role_name, required_policies.command,
-       policy.policyname, policy.roles, policy.cmd, policy.qual, policy.with_check,
-       policy.policyname IS NOT NULL AS effective
-FROM required_policies
+SELECT format('%s %s candidate policy', requested_access.role_name, requested_access.command) AS candidate_policy,
+       requested_access.role_name, requested_access.command,
+       policy.policyname, policy.permissive, policy.roles, policy.cmd, policy.qual, policy.with_check
+FROM requested_access
 LEFT JOIN LATERAL (
-  SELECT policyname, roles, cmd, qual, with_check
+  SELECT policyname, permissive, roles, cmd, qual, with_check
   FROM pg_policies
   WHERE schemaname = 'public'
     AND tablename = 'site_content'
-    AND (roles && ARRAY[required_policies.role_name::name, 'public'::name])
-    AND cmd IN (required_policies.command, 'ALL')
+    AND (roles && ARRAY[requested_access.role_name::name, 'public'::name])
+    AND cmd IN (requested_access.command, 'ALL')
 ) AS policy ON TRUE
-ORDER BY required_policies.role_name, required_policies.command, policy.policyname;
+ORDER BY requested_access.role_name, requested_access.command, policy.policyname;
 
--- STOP if query 1 has no single-column primary or unique key, query 2 does not
--- show RLS enabled, any grant is false, or any required policy is ineffective.
--- Only after those conditions are satisfied should the transaction run.
+-- STOP if query 1 has no single-column primary or unique key, query 2 does not show RLS enabled, or any grant is false. Also STOP unless an authorized operator confirms the candidate-policy semantics: combined SELECT policies permit anon and authenticated public reads; INSERT WITH CHECK permits authenticated writes; UPDATE USING and WITH CHECK permit authenticated writes; and all restrictive policies are accounted for. UPDATE requires SELECT, so its authenticated SELECT prerequisite must remain in place. Only after those conditions are satisfied should the transaction run.
 BEGIN;
 
 INSERT INTO public.site_content AS site_content (key, body)
@@ -98,7 +97,7 @@ VALUES
   ('home_menu_vegan_title', 'Man! I FeelLike a Vegan(V)'),
   ('home_menu_vegan_description', 'Fried spiced potatoes and savory frijoles layered with pickled red onions, peppers, and tomato—bright, tangy, and completely plant-based.'),
   ('home_values_heading', 'ourValues'),
-  ('home_values_body', 'Lorem ipsum dolor sit amet consectetur. Sed tortor diam eget nibh aliquam diam pharetra. Odio enim quis massa ac at vitae ultricies interdum. Massa adipiscing orci cras laoreet congue tristique sit. 
+  ('home_values_body', 'Lorem ipsum dolor sit amet consectetur. Sed tortor diam eget nibh aliquam diam pharetra. Odio enim quis massa ac at vitae ultricies interdum. Massa adipiscing orci cras laoreet congue tristique sit.
 
 Lorem ipsum dolor sit amet consectetur. Sed tortor diam eget nibh aliquam diam pharetra. Odio enim quis massa ac at vitae ultricies interdum. Massa adipiscing orci cras laoreet congue tristique sit.'),
   ('home_values_cta', 'learn more about us'),

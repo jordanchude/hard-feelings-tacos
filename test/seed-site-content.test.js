@@ -6,6 +6,10 @@ import { loadBrowserScript } from './helpers/load-browser-script.js';
 const sqlFile = 'supabase/seed-site-content.sql';
 const registry = loadBrowserScript('js/content-registry.js').window.HFT_CONTENT_REGISTRY;
 
+function readNormalized(file) {
+  return readFileSync(file, 'utf8').replace(/\r\n?/g, '\n');
+}
+
 function decodeHtml(value) {
   return value
     .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(Number.parseInt(hex, 16)))
@@ -19,11 +23,12 @@ function normalizeFallback(value) {
   return decodeHtml(value
     .replace(/<br\s*\/?\s*>\s*<br\s*\/?\s*>/gi, '\n\n')
     .replace(/<[^>]+>/g, '')
-    .replace(/\u200d/g, ''));
+    .replace(/\u200d/g, '')
+    .replace(/[ \t]+\n/g, '\n'));
 }
 
 function fallbacksFrom(file) {
-  const html = readFileSync(file, 'utf8');
+  const html = readNormalized(file);
   const found = new Map();
   const tagPattern = /<([a-z][\w:-]*)(\s[^>]*)?>/gi;
   let match;
@@ -61,6 +66,8 @@ function expectedBodies() {
       byKey.set(key, bodies[0]);
     }
   }
+  assert.equal(registry.length, 66, 'Task 5 has a fixed registry size');
+  assert.equal(byKey.size, 66, 'every one of the 66 keys has a public fallback');
   assert.deepEqual([...byKey.keys()].sort(), [...registry].map(({ key }) => key).sort());
   return byKey;
 }
@@ -79,12 +86,14 @@ function seededBodies(sql) {
 }
 
 test('seed bodies exactly match the normalized public fallbacks for every registry key', () => {
-  const sql = readFileSync(sqlFile, 'utf8');
-  assert.deepEqual(seededBodies(sql), expectedBodies());
+  const sql = readNormalized(sqlFile);
+  const seeded = seededBodies(sql);
+  assert.equal(seeded.size, 66, 'the seed has one row for each fixed registry key');
+  assert.deepEqual(seeded, expectedBodies());
 });
 
 test('seed transaction only fills blank site content and never touches popups', () => {
-  const sql = readFileSync(sqlFile, 'utf8');
+  const sql = readNormalized(sqlFile);
   assert.match(sql, /^BEGIN;/m);
   assert.match(sql, /COMMIT;\s*$/);
   assert.match(sql, /INSERT INTO public\.site_content AS site_content \(key, body\)/);
@@ -93,8 +102,8 @@ test('seed transaction only fills blank site content and never touches popups', 
   assert.doesNotMatch(sql, /\b(?:from|into|update|table)\s+(?:public\.)?popups\b/i);
 });
 
-test('seed preflight is read-only and requires keys, RLS, grants, and effective policies', () => {
-  const sql = readFileSync(sqlFile, 'utf8');
+test('seed preflight is read-only and makes policy semantics an authorized-operator decision', () => {
+  const sql = readNormalized(sqlFile);
   assert.match(sql, /pg_constraint/);
   assert.match(sql, /attname\s*=\s*'key'/);
   assert.match(sql, /contype\s+IN\s*\('p',\s*'u'\)/);
@@ -105,8 +114,16 @@ test('seed preflight is read-only and requires keys, RLS, grants, and effective 
   assert.match(sql, /'authenticated'.*'INSERT'/s);
   assert.match(sql, /'authenticated'.*'UPDATE'/s);
   assert.match(sql, /pg_policies/);
-  assert.match(sql, /policyname.*roles.*cmd.*qual.*with_check/s);
-  assert.match(sql, /STOP.*primary or unique.*key.*RLS.*grant.*policy/is);
+  assert.match(sql, /policyname.*permissive.*roles.*cmd.*qual.*with_check/s);
+  assert.match(sql, /AS candidate_policy/);
+  assert.match(sql, /combined SELECT.*anon.*authenticated/i);
+  assert.match(sql, /INSERT WITH CHECK.*authenticated/i);
+  assert.match(sql, /UPDATE USING and WITH CHECK.*authenticated/i);
+  assert.match(sql, /UPDATE requires SELECT/i);
+  assert.match(sql, /restrictive/i);
+  assert.match(sql, /STOP.*authorized operator.*confirms.*semantics/is);
+  assert.doesNotMatch(sql, /IS NOT NULL AS effective/i);
   assert.doesNotMatch(sql, /\b(?:create|drop|alter)\s+(?:policy|table)\b/i);
   assert.doesNotMatch(sql, /^\s*GRANT\b/im);
+  assert.doesNotMatch(sql, /[ \t]+\n/);
 });
